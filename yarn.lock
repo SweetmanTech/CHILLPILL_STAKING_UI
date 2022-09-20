@@ -200,9 +200,9 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@decent.xyz/decent-sdk-private-v0@git+https://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:x-oauth-basic@github.com/decentxyz/DecentSDK-npm.git#zev/dist":
+"@decent.xyz/decent-sdk-private-v0@git+https://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:x-oauth-basic@github.com/decentxyz/DecentSDK-npm.git#zev/dist":
   version "0.1.0"
-  resolved "git+https://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:x-oauth-basic@github.com/decentxyz/DecentSDK-npm.git#f69ea67dc3a6560cb18d525d7408307c05c1f548"
+  resolved "git+https://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:x-oauth-basic@github.com/decentxyz/DecentSDK-npm.git#f69ea67dc3a6560cb18d525d7408307c05c1f548"
 
 "@emotion/babel-plugin@^11.7.1":
   version "11.9.2"
