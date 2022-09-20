@@ -7,20 +7,13 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getDefaultProvider } from 'ethers'
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.mainnet,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.polygonMumbai]
-      : []),
+    chain.optimismGoerli
   ],
   [
-    alchemyProvider({
-      // This is Alchemy's default API key.
-      // You can get your own at https://dashboard.alchemyapi.io
-      alchemyId: '_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC',
-    }),
     publicProvider(),
   ]
 );
@@ -33,7 +26,7 @@ const { connectors } = getDefaultWallets({
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
-  provider,
+  provider: getDefaultProvider(),
   webSocketProvider,
 });
 
