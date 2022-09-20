@@ -25,7 +25,7 @@ const StakingPage = () => {
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [stakedNftCount, setStakedNftCount] = useState();
-  const [tokenId, setTokenId] = useState();
+  const [tokenId, setTokenId] = useState(1);
 
   useEffect(() => {
     if (!chainId) return;
@@ -75,16 +75,16 @@ const StakingPage = () => {
         NFTs Staked: {stakedNftCount}
       </Typography>
 
-      {signer && <StakeButton contract={stakingContract} tokenId={1} />}
+      {signer && <StakeButton contract={stakingContract} tokenId={tokenId} />}
       {signer && (
         <ApproveNFTButton
           stakingContractAddress={stakingContract?.address}
           nftContract={nftContract}
-          tokenId={1}
+          tokenId={tokenId}
         />
       )}
       {stakedNftCount > 0 && signer && (
-        <UnstakeButton contract={stakingContract} tokenId={1} />
+        <UnstakeButton contract={stakingContract} tokenId={tokenId} />
       )}
     </Box>
   );
