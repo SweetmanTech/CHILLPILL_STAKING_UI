@@ -44,6 +44,7 @@ const StakingPage = () => {
     console.log("approvedAddress", approvedAddress);
 
     const isApproved = approvedAddress == staking.address;
+    console.log("IS APPROVED", isApproved);
     setNeedsApproval(!isApproved);
     console.log("IS APPROVED", isApproved);
     return isApproved;
@@ -65,13 +66,16 @@ const StakingPage = () => {
   };
 
   const getPillToStake = async (stakingNftContract) => {
+    console.log("stakingNftContract", stakingNftContract);
     const balance = await stakingNftContract.balanceOf(account);
-    if (balance > 0) {
+    console.log("BALALNCE", balance.toNumber());
+    if (balance.toNumber() > 0) {
       const totalNftSupply = await stakingNftContract.totalSupply();
       console.log("totalNftSupply", totalNftSupply);
       for (let i = 0; i < totalNftSupply; i++) {
         const tokenOwner = await stakingNftContract.ownerOf(i);
         if (tokenOwner === account) {
+          console.log("FOUND IT", i);
           setTokenId(i);
           return i;
         }
@@ -95,11 +99,11 @@ const StakingPage = () => {
       // TODO: get staked tokenID
       await getStakedPill(contracts.staking);
     } else {
+      console.log("HELLO WORLD");
+
       const pillToStake = await getPillToStake(contracts.nft);
       console.log("TOKEN ID:", pillToStake);
-      if (pillToStake) {
-        isPillStakeApproved(pillToStake, contracts);
-      }
+      await isPillStakeApproved(pillToStake, contracts);
     }
     setLoading(false);
   };
