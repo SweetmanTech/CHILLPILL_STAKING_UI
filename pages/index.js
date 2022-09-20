@@ -19,7 +19,7 @@ const Home = () => {
 
       <footer className={styles.footer}>
         <a
-          href="https://github.com/SweetmanTech/rainbowkit-token-gated"
+          href="https://github.com/SweetmanTech/CHILLPILL_STAKING_UI"
           target="_blank"
           rel="noopener noreferrer"
         >
