@@ -2,7 +2,12 @@ import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 import handleTxError from "../../lib/handleTxError";
 
-const ApproveNFTButton = ({ stakingContractAddress, nftContract, tokenId }) => {
+const ApproveNFTButton = ({
+  stakingContractAddress,
+  nftContract,
+  tokenId,
+  onSuccess,
+}) => {
   const handleClick = async () => {
     console.log(nftContract);
     if (!nftContract?.signer) {
@@ -13,7 +18,8 @@ const ApproveNFTButton = ({ stakingContractAddress, nftContract, tokenId }) => {
     try {
       const tx = await nftContract.approve(stakingContractAddress, [tokenId]);
       await tx.wait();
-      toast.success("Approved! You can now stake your NFT");
+      toast.success("Approved! You can now stake your ChillPill");
+      onSuccess();
     } catch (error) {
       handleTxError(error);
     }
@@ -21,7 +27,7 @@ const ApproveNFTButton = ({ stakingContractAddress, nftContract, tokenId }) => {
 
   return (
     <Button onClick={handleClick} size="large" variant="contained">
-      Approve NFT for Staking
+      Prep Pill for Staking
     </Button>
   );
 };
