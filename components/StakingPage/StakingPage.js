@@ -6,7 +6,6 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
-import getDefaultProvider from "../../lib/getDefaultProvider";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 
 const StakingPage = () => {
