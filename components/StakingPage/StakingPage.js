@@ -7,6 +7,7 @@ import {
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import { ethers } from "ethers";
 
 const StakingPage = () => {
   const { data: signer } = useSigner();
@@ -22,6 +23,7 @@ const StakingPage = () => {
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
   const [approved, setApproved] = useState(true);
+  const [unclaimed, setUnclaimed] = useState(0);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -77,15 +79,21 @@ const StakingPage = () => {
     }
   };
 
-  const getUnclaimedChillBalance = async (stakingNftContract) => {
-    console.log("$CHILL contract");
+  const getUnclaimedChillBalance = async (stakingNftContract, stakedPills) => {
+    console.log("$CHILL contract", stakingNftContract);
+    const newUnclaimed = await stakingNftContract.earningInfo(
+      account,
+      stakedPills
+    );
+    setUnclaimed(newUnclaimed.toString());
+    console.log("unclaimed", unclaimed.toString());
   };
 
   const getStakedPill = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
     console.log("STAKED PILLS", stakedPills);
     setTokenId(stakedPills[0].toNumber());
-    return stakedPills[0].toNumber();
+    return stakedPills;
   };
 
   const load = async (signerOrProvider) => {
@@ -95,14 +103,14 @@ const StakingPage = () => {
     console.log("Staked balance", stakedBalance);
     if (stakedBalance > 0) {
       // TODO: get staked tokenID
-      await getStakedPill(contracts.staking);
+      const stakedPills = await getStakedPill(contracts.staking);
+      await getUnclaimedChillBalance(contracts.staking, stakedPills);
     } else {
       console.log("HELLO WORLD");
 
       const pillToStake = await getPillToStake(contracts.nft);
       console.log("TOKEN ID:", pillToStake);
       await isPillStakeApproved(pillToStake, contracts);
-      await getUnclaimedChillBalance();
     }
     setLoading(false);
   };
@@ -132,7 +140,7 @@ const StakingPage = () => {
         NFTs Staked: {stakedNftCount}
       </Typography>
       <Typography variant="caption" color="white">
-        $CHILL balance (unclaimed): {tokenId}
+        $CHILL balance (unclaimed): {ethers.utils.formatEther(unclaimed)} $CHILL
       </Typography>
 
       {signer && !loading ? (
