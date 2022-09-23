@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { allChains, useAccount, useSigner } from "wagmi";
 import {
   getDCNTStaking,
   getDCNT721A,
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
-import {
-  ApproveNFTButton,
-  StakeButton,
-  UnstakeButton,
-} from "../StakingButtons";
+import { StakeButton, UnstakeButton } from "../StakingButtons";
 import getDefaultProvider from "../../lib/getDefaultProvider";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 
