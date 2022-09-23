@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { allChains, useAccount, useSigner } from "wagmi";
 import {
   getDCNTStaking,
   getDCNT721A,
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
-import {
-  ApproveNFTButton,
-  StakeButton,
-  UnstakeButton,
-} from "../StakingButtons";
-import getDefaultProvider from "../../lib/getDefaultProvider";
+import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 
 const StakingPage = () => {
@@ -27,7 +21,7 @@ const StakingPage = () => {
   const [stakedNftCount, setStakedNftCount] = useState();
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [needsApproval, setNeedsApproval] = useState(true);
+  const [approved, setApproved] = useState(true);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -45,7 +39,7 @@ const StakingPage = () => {
 
     const isApproved = approvedAddress == staking.address;
     console.log("IS APPROVED", isApproved);
-    setNeedsApproval(!isApproved);
+    setApproved(isApproved);
     console.log("IS APPROVED", isApproved);
     return isApproved;
   };
@@ -149,18 +143,13 @@ const StakingPage = () => {
               tokenId={tokenId}
               onSuccess={() => load(signer)}
             />
-          ) : needsApproval ? (
-            <ApproveNFTButton
-              stakingContractAddress={stakingContract?.address}
-              nftContract={nftContract}
-              tokenId={tokenId}
-              onSuccess={() => load(signer)}
-            />
           ) : (
             <StakeButton
               contract={stakingContract}
               tokenId={tokenId}
               onSuccess={() => load(signer)}
+              approved={approved}
+              nftContract={nftContract}
             />
           )}
         </>
