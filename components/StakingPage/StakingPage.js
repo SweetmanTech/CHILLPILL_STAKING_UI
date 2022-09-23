@@ -83,6 +83,10 @@ const StakingPage = () => {
     }
   };
 
+  const getUnclaimedChillBalance = async (stakingNftContract) => {
+    console.log("$CHILL contract");
+  };
+
   const getStakedPill = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
     console.log("STAKED PILLS", stakedPills);
@@ -104,6 +108,7 @@ const StakingPage = () => {
       const pillToStake = await getPillToStake(contracts.nft);
       console.log("TOKEN ID:", pillToStake);
       await isPillStakeApproved(pillToStake, contracts);
+      await getUnclaimedChillBalance();
     }
     setLoading(false);
   };
@@ -121,12 +126,6 @@ const StakingPage = () => {
         ChillRx Staking
       </Typography>
       <Typography variant="caption" color="white">
-        Chain: {chain?.name}
-      </Typography>
-      <Typography variant="caption" color="white">
-        ChainId: {chainId}
-      </Typography>
-      <Typography variant="caption" color="white">
         Staking Contract Address: {address}
       </Typography>
       <Typography variant="caption" color="white">
@@ -139,7 +138,7 @@ const StakingPage = () => {
         NFTs Staked: {stakedNftCount}
       </Typography>
       <Typography variant="caption" color="white">
-        Pill Owned: {tokenId}
+        $CHILL balance (unclaimed): {tokenId}
       </Typography>
 
       {signer && !loading ? (
