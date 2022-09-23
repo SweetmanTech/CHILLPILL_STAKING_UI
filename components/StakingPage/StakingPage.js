@@ -27,7 +27,7 @@ const StakingPage = () => {
   const [stakedNftCount, setStakedNftCount] = useState();
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [needsApproval, setNeedsApproval] = useState(true);
+  const [approved, setApproved] = useState(true);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -45,7 +45,7 @@ const StakingPage = () => {
 
     const isApproved = approvedAddress == staking.address;
     console.log("IS APPROVED", isApproved);
-    setNeedsApproval(!isApproved);
+    setApproved(isApproved);
     console.log("IS APPROVED", isApproved);
     return isApproved;
   };
@@ -150,18 +150,13 @@ const StakingPage = () => {
               tokenId={tokenId}
               onSuccess={() => load(signer)}
             />
-          ) : needsApproval ? (
-            <ApproveNFTButton
-              stakingContractAddress={stakingContract?.address}
-              nftContract={nftContract}
-              tokenId={tokenId}
-              onSuccess={() => load(signer)}
-            />
           ) : (
             <StakeButton
               contract={stakingContract}
               tokenId={tokenId}
               onSuccess={() => load(signer)}
+              approved={approved}
+              nftContract={nftContract}
             />
           )}
         </>
