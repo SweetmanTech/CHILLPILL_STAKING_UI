@@ -38,7 +38,6 @@ const StakingPage = () => {
 
   const getTotalStakedPills = async (staking = stakingContract) => {
     const stakedBalance = await staking.totalStaked();
-    console.log("totalStaked", stakedBalance.toNumber());
     setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
   };
@@ -48,12 +47,8 @@ const StakingPage = () => {
     { nft, staking }
   ) => {
     const approvedAddress = await nft.getApproved(pillToStake);
-    console.log("approvedAddress", approvedAddress);
-
     const isApproved = approvedAddress == staking.address;
-    console.log("IS APPROVED", isApproved);
     setApproved(isApproved);
-    console.log("IS APPROVED", isApproved);
     return isApproved;
   };
 
@@ -67,22 +62,17 @@ const StakingPage = () => {
     setErc20ContractAddress(erc20Address);
 
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
-    console.log("stakingNftContract", stakingNftContract);
     setNftContract(stakingNftContract);
     return { staking, sdk, nft: stakingNftContract };
   };
 
   const getPillToStake = async (stakingNftContract) => {
-    console.log("stakingNftContract", stakingNftContract);
     const balance = await stakingNftContract.balanceOf(account);
-    console.log("BALALNCE", balance.toNumber());
     if (balance.toNumber() > 0) {
       const totalNftSupply = await stakingNftContract.totalSupply();
-      console.log("totalNftSupply", totalNftSupply);
       for (let i = 0; i < totalNftSupply; i++) {
         const tokenOwner = await stakingNftContract.ownerOf(i);
         if (tokenOwner === account) {
-          console.log("FOUND IT", i);
           setTokenId(i);
           return i;
         }
@@ -92,7 +82,6 @@ const StakingPage = () => {
 
   const getStakedPill = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
-    console.log("STAKED PILLS", stakedPills);
     setTokenId(stakedPills[0].toNumber());
     return stakedPills[0].toNumber();
   };
@@ -101,15 +90,11 @@ const StakingPage = () => {
     setLoading(true);
     const contracts = await getStakingContract(signerOrProvider);
     const stakedBalance = await getStakedBalance(contracts.staking);
-    console.log("Staked balance", stakedBalance);
     if (stakedBalance > 0) {
       // TODO: get staked tokenID
       await getStakedPill(contracts.staking);
     } else {
-      console.log("HELLO WORLD");
-
       const pillToStake = await getPillToStake(contracts.nft);
-      console.log("TOKEN ID:", pillToStake);
       await isPillStakeApproved(pillToStake, contracts);
     }
     await getTotalStakedPills();
