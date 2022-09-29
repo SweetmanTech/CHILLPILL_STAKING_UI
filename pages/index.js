@@ -1,11 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import StakingPage from "../components/StakingPage";
 import { useAccount } from "wagmi";
 
-const Home = () => {
+const Home = ({ openSeaData }) => {
   const { address } = useAccount();
   return (
     <Box sx={{ backgroundColor: "#111827" }} className={styles.container}>
@@ -16,20 +16,19 @@ const Home = () => {
 
       <main className={styles.main}>
         <ConnectButton />
-        {address && <StakingPage />}
+        {address && <StakingPage openSeaData={openSeaData} />}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://github.com/SweetmanTech/CHILLPILL_STAKING_UI"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography color="white">Made with ❤️ by sweetman.eth</Typography>{" "}
-        </a>
-      </footer>
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const res = await fetch("https://api.opensea.io/collection/chillrx");
+  const resJson = await res.json();
+
+  return {
+    props: { openSeaData: resJson }, // will be passed to the page component as props
+  };
+}
 
 export default Home;

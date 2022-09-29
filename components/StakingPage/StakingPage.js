@@ -6,9 +6,9 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
-const StakingPage = () => {
+const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
   const chainId = process.env.NEXT_PUBLIC_CHAIN_ID;
@@ -19,9 +19,15 @@ const StakingPage = () => {
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [stakedNftCount, setStakedNftCount] = useState();
+  const [totalStakedPills, setTotalStakedPills] = useState(0);
+  const [floorPrice, setFloorPrice] = useState(0);
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
   const [approved, setApproved] = useState(true);
+  console.log("STAKING CONTRACT ADDRESS: ", address);
+  console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
+  console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
+  console.log("CHAIN ID: ", chainId);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -30,17 +36,19 @@ const StakingPage = () => {
     return stakedBalance.toNumber();
   };
 
+  const getTotalStakedPills = async (staking = stakingContract) => {
+    const stakedBalance = await staking.totalStaked();
+    setTotalStakedPills(stakedBalance.toNumber());
+    return stakedBalance.toNumber();
+  };
+
   const isPillStakeApproved = async (
     pillToStake = tokenId,
     { nft, staking }
   ) => {
     const approvedAddress = await nft.getApproved(pillToStake);
-    console.log("approvedAddress", approvedAddress);
-
     const isApproved = approvedAddress == staking.address;
-    console.log("IS APPROVED", isApproved);
     setApproved(isApproved);
-    console.log("IS APPROVED", isApproved);
     return isApproved;
   };
 
@@ -54,22 +62,17 @@ const StakingPage = () => {
     setErc20ContractAddress(erc20Address);
 
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
-    console.log("stakingNftContract", stakingNftContract);
     setNftContract(stakingNftContract);
     return { staking, sdk, nft: stakingNftContract };
   };
 
   const getPillToStake = async (stakingNftContract) => {
-    console.log("stakingNftContract", stakingNftContract);
     const balance = await stakingNftContract.balanceOf(account);
-    console.log("BALALNCE", balance.toNumber());
     if (balance.toNumber() > 0) {
       const totalNftSupply = await stakingNftContract.totalSupply();
-      console.log("totalNftSupply", totalNftSupply);
       for (let i = 0; i < totalNftSupply; i++) {
         const tokenOwner = await stakingNftContract.ownerOf(i);
         if (tokenOwner === account) {
-          console.log("FOUND IT", i);
           setTokenId(i);
           return i;
         }
@@ -79,7 +82,6 @@ const StakingPage = () => {
 
   const getStakedPill = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
-    console.log("STAKED PILLS", stakedPills);
     setTokenId(stakedPills[0].toNumber());
     return stakedPills[0].toNumber();
   };
@@ -88,18 +90,20 @@ const StakingPage = () => {
     setLoading(true);
     const contracts = await getStakingContract(signerOrProvider);
     const stakedBalance = await getStakedBalance(contracts.staking);
-    console.log("Staked balance", stakedBalance);
     if (stakedBalance > 0) {
       // TODO: get staked tokenID
       await getStakedPill(contracts.staking);
     } else {
-      console.log("HELLO WORLD");
-
       const pillToStake = await getPillToStake(contracts.nft);
-      console.log("TOKEN ID:", pillToStake);
       await isPillStakeApproved(pillToStake, contracts);
     }
+    await getTotalStakedPills(contracts.staking);
+    getFloorPrice();
     setLoading(false);
+  };
+
+  const getFloorPrice = () => {
+    setFloorPrice(openSeaData.collection.stats.floor_price);
   };
 
   useEffect(() => {
@@ -114,26 +118,15 @@ const StakingPage = () => {
       <Typography mt={3} variant="h3" color="white">
         ChillRx Staking
       </Typography>
-      <Typography variant="caption" color="white">
-        Chain: {chain?.name}
+      <Typography variant="body2" color="white">
+        % of ChillRx Staked:{" "}
+        {parseFloat((totalStakedPills / 9999) * 100).toFixed(2)}%
       </Typography>
-      <Typography variant="caption" color="white">
-        ChainId: {chainId}
+      <Typography variant="body2" color="white">
+        Total ChillRx Staked: {totalStakedPills}
       </Typography>
-      <Typography variant="caption" color="white">
-        Staking Contract Address: {address}
-      </Typography>
-      <Typography variant="caption" color="white">
-        NFT Contract Address: {nftContractAddress}
-      </Typography>
-      <Typography variant="caption" color="white">
-        ERC20 Contract Address: {erc20ContractAddress}
-      </Typography>
-      <Typography variant="caption" color="white">
-        NFTs Staked: {stakedNftCount}
-      </Typography>
-      <Typography variant="caption" color="white">
-        Pill Owned: {tokenId}
+      <Typography variant="body2" color="white">
+        Minimum Value Locked: {totalStakedPills * floorPrice}ETH
       </Typography>
 
       {signer && !loading ? (
