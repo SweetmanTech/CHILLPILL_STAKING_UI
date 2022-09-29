@@ -7,7 +7,6 @@ import { useAccount } from "wagmi";
 
 const Home = () => {
   const { address } = useAccount();
-  console.log("address", address);
   return (
     <Box sx={{ backgroundColor: "#111827" }} className={styles.container}>
       <Head>
