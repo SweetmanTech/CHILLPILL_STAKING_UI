@@ -19,14 +19,27 @@ const StakingPage = () => {
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [stakedNftCount, setStakedNftCount] = useState();
+  const [totalStakedPills, setTotalStakedPills] = useState();
+  const [floorPrice, setFloorPrice] = useState(0);
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
   const [approved, setApproved] = useState(true);
+  console.log("STAKING CONTRACT ADDRESS: ", address);
+  console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
+  console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
+  console.log("CHAIN ID: ", chainId);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
     const stakedBalance = await staking.balanceOf(account);
     setStakedNftCount(stakedBalance.toNumber());
+    return stakedBalance.toNumber();
+  };
+
+  const getTotalStakedPills = async (staking = stakingContract) => {
+    const stakedBalance = await staking.totalStaked();
+    console.log("totalStaked", stakedBalance.toNumber());
+    setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
   };
 
@@ -99,7 +112,15 @@ const StakingPage = () => {
       console.log("TOKEN ID:", pillToStake);
       await isPillStakeApproved(pillToStake, contracts);
     }
+    await getTotalStakedPills();
+    await getFloorPrice();
     setLoading(false);
+  };
+
+  const getFloorPrice = async () => {
+    const res = await fetch("https://api.opensea.io/collection/chillrx");
+    const resJson = await res.json();
+    setFloorPrice(resJson.collection.stats.floor_price);
   };
 
   useEffect(() => {
@@ -114,26 +135,15 @@ const StakingPage = () => {
       <Typography mt={3} variant="h3" color="white">
         ChillRx Staking
       </Typography>
-      <Typography variant="caption" color="white">
-        Chain: {chain?.name}
+      <Typography variant="body2" color="white">
+        % of ChillRx Staked:{" "}
+        {parseFloat((totalStakedPills / 9999) * 100).toFixed(2)}%
       </Typography>
-      <Typography variant="caption" color="white">
-        ChainId: {chainId}
+      <Typography variant="body2" color="white">
+        Total ChillRx Staked: {totalStakedPills}
       </Typography>
-      <Typography variant="caption" color="white">
-        Staking Contract Address: {address}
-      </Typography>
-      <Typography variant="caption" color="white">
-        NFT Contract Address: {nftContractAddress}
-      </Typography>
-      <Typography variant="caption" color="white">
-        ERC20 Contract Address: {erc20ContractAddress}
-      </Typography>
-      <Typography variant="caption" color="white">
-        NFTs Staked: {stakedNftCount}
-      </Typography>
-      <Typography variant="caption" color="white">
-        Pill Owned: {tokenId}
+      <Typography variant="body2" color="white">
+        Minimum Value Locked: {totalStakedPills * floorPrice}ETH
       </Typography>
 
       {signer && !loading ? (

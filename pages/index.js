@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -18,16 +18,6 @@ const Home = () => {
         <ConnectButton />
         {address && <StakingPage />}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://github.com/SweetmanTech/CHILLPILL_STAKING_UI"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography color="white">Made with ❤️ by sweetman.eth</Typography>{" "}
-        </a>
-      </footer>
     </Box>
   );
 };
