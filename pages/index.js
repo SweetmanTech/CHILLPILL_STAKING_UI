@@ -3,8 +3,10 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import StakingPage from "../components/StakingPage";
+import { useAccount } from "wagmi";
 
 const Home = () => {
+  const { address } = useAccount();
   return (
     <Box sx={{ backgroundColor: "#111827" }} className={styles.container}>
       <Head>
@@ -14,7 +16,7 @@ const Home = () => {
 
       <main className={styles.main}>
         <ConnectButton />
-        <StakingPage />
+        {address && <StakingPage />}
       </main>
 
       <footer className={styles.footer}>
