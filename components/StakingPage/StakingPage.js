@@ -6,7 +6,7 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -37,7 +37,6 @@ const StakingPage = ({ openSeaData }) => {
   };
 
   const getTotalStakedPills = async (staking = stakingContract) => {
-    console.log("openSeaData", openSeaData);
     const stakedBalance = await staking.totalStaked();
     setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
