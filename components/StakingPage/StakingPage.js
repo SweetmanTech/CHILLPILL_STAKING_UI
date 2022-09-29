@@ -19,7 +19,7 @@ const StakingPage = () => {
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [stakedNftCount, setStakedNftCount] = useState();
-  const [totalStakedPills, setTotalStakedPills] = useState();
+  const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -97,7 +97,7 @@ const StakingPage = () => {
       const pillToStake = await getPillToStake(contracts.nft);
       await isPillStakeApproved(pillToStake, contracts);
     }
-    await getTotalStakedPills();
+    await getTotalStakedPills(contracts.staking);
     await getFloorPrice();
     setLoading(false);
   };
