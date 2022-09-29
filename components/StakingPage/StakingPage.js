@@ -8,7 +8,7 @@ import {
 import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 
-const StakingPage = () => {
+const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
   const chainId = process.env.NEXT_PUBLIC_CHAIN_ID;
@@ -37,6 +37,7 @@ const StakingPage = () => {
   };
 
   const getTotalStakedPills = async (staking = stakingContract) => {
+    console.log("openSeaData", openSeaData);
     const stakedBalance = await staking.totalStaked();
     setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
@@ -98,14 +99,12 @@ const StakingPage = () => {
       await isPillStakeApproved(pillToStake, contracts);
     }
     await getTotalStakedPills(contracts.staking);
-    await getFloorPrice();
+    getFloorPrice();
     setLoading(false);
   };
 
-  const getFloorPrice = async () => {
-    const res = await fetch("https://api.opensea.io/collection/chillrx");
-    const resJson = await res.json();
-    setFloorPrice(resJson.collection.stats.floor_price);
+  const getFloorPrice = () => {
+    setFloorPrice(openSeaData.collection.stats.floor_price);
   };
 
   useEffect(() => {
