@@ -39,15 +39,8 @@ const ConnectWalletButton = () => {
               if (!connected) {
                 return (
                   <div
-                    onMouseEnter={() => {
-                      console.log("HOVERING");
-                      setHovering(true);
-                    }}
-                    onMouseLeave={() => {
-                      console.log("LEAVE HOVERING");
-
-                      setHovering(false);
-                    }}
+                    onMouseEnter={() => setHovering(true)}
+                    onMouseLeave={() => setHovering(false)}
                     onClick={openConnectModal}
                   >
                     <ConnectSvg
