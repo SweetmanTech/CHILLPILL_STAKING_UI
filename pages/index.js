@@ -4,6 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import StakingPage from "../components/StakingPage";
 import { useAccount } from "wagmi";
+import ConnectWalletButton from "../components/ConnectWalletButton/ConnectWalletButton";
 
 const Home = ({ openSeaData }) => {
   const { address } = useAccount();
@@ -15,7 +16,7 @@ const Home = ({ openSeaData }) => {
       </Head>
 
       <main className={styles.main}>
-        <ConnectButton />
+        <ConnectWalletButton />
         {address && <StakingPage openSeaData={openSeaData} />}
       </main>
     </Box>
