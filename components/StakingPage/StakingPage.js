@@ -5,11 +5,11 @@ import {
   getDCNT721A,
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
-import { StakeButton, UnstakeButton } from "../StakingButtons";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
+import { getZdkTokens } from "../../lib/zdk";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -27,10 +27,15 @@ const StakingPage = ({ openSeaData }) => {
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
   const [approved, setApproved] = useState(true);
-  console.log("STAKING CONTRACT ADDRESS: ", address);
-  console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
-  console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
-  console.log("CHAIN ID: ", chainId);
+  const [tokens, setTokens] = useState([]);
+  const [stakedTokens, setStakedTokens] = useState([]);
+
+  useEffect(() => {
+    console.log("STAKING CONTRACT ADDRESS: ", address);
+    console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
+    console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
+    console.log("CHAIN ID: ", chainId);
+  }, []);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -43,16 +48,6 @@ const StakingPage = ({ openSeaData }) => {
     const stakedBalance = await staking.totalStaked();
     setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
-  };
-
-  const isPillStakeApproved = async (
-    pillToStake = tokenId,
-    { nft, staking }
-  ) => {
-    const approvedAddress = await nft.getApproved(pillToStake);
-    const isApproved = approvedAddress == staking.address;
-    setApproved(isApproved);
-    return isApproved;
   };
 
   const getStakingContract = async (signerOrProvider) => {
@@ -69,37 +64,24 @@ const StakingPage = ({ openSeaData }) => {
     return { staking, sdk, nft: stakingNftContract };
   };
 
-  const getPillToStake = async (stakingNftContract) => {
-    const balance = await stakingNftContract.balanceOf(account);
-    if (balance.toNumber() > 0) {
-      const totalNftSupply = await stakingNftContract.totalSupply();
-      for (let i = 0; i < totalNftSupply; i++) {
-        const tokenOwner = await stakingNftContract.ownerOf(i);
-        if (tokenOwner === account) {
-          setTokenId(i);
-          return i;
-        }
-      }
-    }
-  };
-
-  const getStakedPill = async (staking = stakingContract) => {
+  const getStakedPills = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
+    const intArray = [];
+    for (let i = 0; i < stakedPills.length; i++) {
+      intArray.push(stakedPills[i].toNumber());
+    }
+    setStakedTokens(intArray);
     setTokenId(stakedPills[0].toNumber());
     return stakedPills[0].toNumber();
   };
 
   const load = async (signerOrProvider) => {
     setLoading(true);
+    const zdkTokens = await getZdkTokens(account);
+    setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
-    const stakedBalance = await getStakedBalance(contracts.staking);
-    if (stakedBalance > 0) {
-      // TODO: get staked tokenID
-      await getStakedPill(contracts.staking);
-    } else {
-      const pillToStake = await getPillToStake(contracts.nft);
-      await isPillStakeApproved(pillToStake, contracts);
-    }
+    await getStakedBalance(contracts.staking);
+    await getStakedPills(contracts.staking);
     await getTotalStakedPills(contracts.staking);
     getFloorPrice();
     setLoading(false);
@@ -135,11 +117,22 @@ const StakingPage = ({ openSeaData }) => {
         />
       </>
 
-      <TokenRow
-        style={{
-          marginTop: "-30vh",
-        }}
-      />
+      {tokens.map((token) => {
+        const myTokenId = token.token.tokenId;
+        const isStaked = stakedTokens.includes(parseInt(myTokenId));
+        return (
+          <TokenRow
+            stakingContract={stakingContract}
+            nftContract={nftContract}
+            staked={isStaked}
+            key={myTokenId}
+            tokenId={myTokenId}
+            style={{
+              marginTop: "-30vh",
+            }}
+          />
+        );
+      })}
     </Box>
   );
 };

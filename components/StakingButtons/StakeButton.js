@@ -21,7 +21,6 @@ const StakeButton = ({
 
     setLoading(true);
     try {
-      console.log("APPROVED", approved);
       if (!approved) {
         const nowApproved = await approve();
         if (!nowApproved) {
@@ -40,7 +39,6 @@ const StakeButton = ({
   };
 
   const approve = async () => {
-    console.log(nftContract);
     if (!nftContract?.signer) {
       toast.error("Please connect your wallet");
       return;

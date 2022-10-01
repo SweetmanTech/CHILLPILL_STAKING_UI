@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.optimismGoerli
+    chain.goerli
   ],
   [
     publicProvider(),
