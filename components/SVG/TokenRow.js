@@ -10,22 +10,16 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const [approved, setApproved] = useState();
 
   const handleClick = async () => {
-    console.log("CHECK IF STAKED / UNSTAKED", stakingContract);
-    console.log("tokenId", tokenId);
-    console.log("staked", staked);
     if (staked) {
       await unstake(stakingContract, tokenId);
     } else {
-      console.log("nftContract", nftContract);
       const response = await stake(
         stakingContract,
         tokenId,
         approved,
         nftContract
       );
-      console.log("STAKE RESPONSE IN TOKENROW", response);
       if (response.error) {
-        console.log("CALL MINT TESTNET NFT");
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
       }
     }
@@ -33,10 +27,8 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
 
   useEffect(() => {
     const isPillStakeApproved = async () => {
-      console.log("nftContract", nftContract);
       const approvedAddress = await nftContract.getApproved(1).catch();
       const isApproved = approvedAddress == stakingContract.address;
-      console.log("IS APPROVED", isApproved);
       setApproved(isApproved);
       return isApproved;
     };

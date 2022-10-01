@@ -39,8 +39,6 @@ const StakingPage = ({ openSeaData }) => {
     console.log("CHAIN ID: ", chainId);
 
     const zdkStuff = async () => {
-      console.log("ZDK", zdk);
-      console.log("nftContractAddress", nftContractAddress);
       const results = await zdk
         .tokens({
           where: {
@@ -49,7 +47,6 @@ const StakingPage = ({ openSeaData }) => {
           },
         })
         .catch(console.error);
-      console.log("ZDK RESULTS", results.tokens.nodes);
       setTokens(results.tokens.nodes);
     };
 
@@ -59,11 +56,8 @@ const StakingPage = ({ openSeaData }) => {
   }, [address, chainId]);
 
   const getStakedBalance = async (staking = stakingContract) => {
-    console.log("GETTING STAKED BALANCE", staking);
-
     if (!signer) return;
     const stakedBalance = await staking.balanceOf(account);
-    console.log("STAKED BALANCE", stakedBalance);
     setStakedNftCount(stakedBalance.toNumber());
     return stakedBalance.toNumber();
   };
@@ -91,11 +85,8 @@ const StakingPage = ({ openSeaData }) => {
     const staking = await getDCNTStaking(sdk, address);
     setStakingContract(staking);
     const nftAddress = await staking.nftAddress();
-    console.log("NFT CONTRACT", nftAddress);
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
-    console.log("ERC20 CONTRACT ADDRESS", erc20Address);
-
     setErc20ContractAddress(erc20Address);
 
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
@@ -124,26 +115,16 @@ const StakingPage = ({ openSeaData }) => {
       intArray.push(stakedPills[i].toNumber());
     }
     setStakedTokens(intArray);
-    console.log("STAKED TOKENS GETING", stakedPills);
     setTokenId(stakedPills[0].toNumber());
     return stakedPills[0].toNumber();
   };
 
   const load = async (signerOrProvider) => {
-    console.log("LOADING");
     setLoading(true);
     const contracts = await getStakingContract(signerOrProvider);
-    console.log("getStakingContract");
-
     await getStakedBalance(contracts.staking);
-    console.log("getStakedBalance");
-
     await getStakedPill(contracts.staking);
-    console.log("getStakedPill");
-
     await getTotalStakedPills(contracts.staking);
-    console.log("getTotalStakedPills");
-
     getFloorPrice();
     setLoading(false);
   };
@@ -178,12 +159,8 @@ const StakingPage = ({ openSeaData }) => {
         />
       </>
 
-      {tokens.map((token, index) => {
+      {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
-        console.log("STAKED TOKENS", stakedTokens);
-        console.log("myTokenId", myTokenId);
-        console.log("myTokenId", typeof myTokenId);
-        console.log("IS STAKED", stakedTokens.includes(parseInt(myTokenId)));
         const isStaked = stakedTokens.includes(parseInt(myTokenId));
         return (
           <TokenRow
