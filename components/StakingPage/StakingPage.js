@@ -5,13 +5,11 @@ import {
   getDCNT721A,
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
-import { StakeButton, UnstakeButton } from "../StakingButtons";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
-import { zdk } from "../../lib/zdk";
-import { BigNumber } from "ethers";
+import { getZdkTokens } from "../../lib/zdk";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -38,20 +36,8 @@ const StakingPage = ({ openSeaData }) => {
     console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
     console.log("CHAIN ID: ", chainId);
 
-    const zdkStuff = async () => {
-      const results = await zdk
-        .tokens({
-          where: {
-            collectionAddresses: ["0xe7e07f9dff6b48eba32641c53816f25368297d22"],
-            ownerAddresses: [account],
-          },
-        })
-        .catch(console.error);
-      setTokens(results.tokens.nodes);
-    };
-
     if (!tokens.length) {
-      zdkStuff();
+      getZdkTokens(account);
     }
   }, [address, chainId]);
 
