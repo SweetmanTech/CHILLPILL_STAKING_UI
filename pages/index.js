@@ -1,11 +1,9 @@
 import { Box } from "@mui/material";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import StakingPage from "../components/StakingPage";
 import { useAccount } from "wagmi";
-import ConnectWalletButton from "../components/ConnectWalletButton";
-import LoginSpeechBubble from "../components/LoginSpeechBubble";
+import LoginPage from "../components/LoginPage";
 
 const Home = ({ openSeaData }) => {
   const { address } = useAccount();
@@ -17,18 +15,7 @@ const Home = ({ openSeaData }) => {
       </Head>
 
       <main className={styles.main}>
-        {address ? (
-          <>
-            <ConnectWalletButton />
-
-            <StakingPage openSeaData={openSeaData} />
-          </>
-        ) : (
-          <>
-            <LoginSpeechBubble />
-            <ConnectWalletButton />
-          </>
-        )}
+        {address ? <StakingPage openSeaData={openSeaData} /> : <LoginPage />}
       </main>
     </Box>
   );

@@ -7,6 +7,7 @@ import {
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import ConnectWalletButton from "../ConnectWalletButton";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -115,6 +116,8 @@ const StakingPage = ({ openSeaData }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <ConnectWalletButton />
+
       <Typography mt={3} variant="h3" color="white">
         ChillRx Staking
       </Typography>
