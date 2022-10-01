@@ -14,7 +14,6 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
     if (staked) {
       await unstake(stakingContract, tokenId);
     } else {
-      console.log("TOKEN ROW NFT CONTRACT", nftContract);
       const response = await stake(stakingContract, tokenId, nftContract);
       if (response.error) {
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
