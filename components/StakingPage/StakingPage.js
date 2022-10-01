@@ -51,16 +51,25 @@ const StakingPage = ({ openSeaData }) => {
   };
 
   const getStakingContract = async (signerOrProvider) => {
+    console.log("GETTING STAKING CONTRACT...");
     const sdk = await setupDCNTSDK(chain?.id || 1, signerOrProvider);
+    console.log("sdk", sdk);
+
     const staking = await getDCNTStaking(sdk, address);
+    console.log("staking", staking);
+
     setStakingContract(staking);
     const nftAddress = await staking.nftAddress();
+    console.log("nftAddress", nftAddress);
+
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
     setErc20ContractAddress(erc20Address);
 
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
     setNftContract(stakingNftContract);
+    console.log("NFT contract", stakingNftContract);
+
     return { staking, sdk, nft: stakingNftContract };
   };
 
@@ -128,7 +137,8 @@ const StakingPage = ({ openSeaData }) => {
             key={myTokenId}
             tokenId={myTokenId}
             style={{
-              marginTop: "-30vh",
+              marginTop: "-30%",
+              marginBottom: "-15%",
             }}
           />
         );
