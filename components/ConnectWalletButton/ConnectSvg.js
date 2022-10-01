@@ -1,4 +1,4 @@
-const ConnectSvg = ({ onClick, fillColor = "#FAF400" }) => (
+const ConnectSvg = ({ onClick, fillColor = "#FAF400", style }) => (
   <svg
     version="1.1"
     id="Layer_1"
@@ -9,13 +9,7 @@ const ConnectSvg = ({ onClick, fillColor = "#FAF400" }) => (
     width="25%"
     onClick={onClick}
     viewBox="0 0 2048 2048"
-    style={{
-      "enable-background": "new 0 0 2048 2048;",
-      zIndex: 1000,
-      position: "absolute",
-      top: "50%",
-      right: "20%",
-    }}
+    style={style}
     xmlSpace="preserve"
   >
     <g>

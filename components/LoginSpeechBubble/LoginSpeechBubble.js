@@ -1,7 +1,7 @@
-const LoginSpeechBubble = () => {
+const LoginSpeechBubble = ({ style }) => {
   return (
     <svg
-      style={{ position: "relative", zIndex: 0 }}
+      style={style}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1226.97 540.31"
     >

@@ -2,7 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import ConnectSvg from "./ConnectSvg";
 
-const ConnectWalletButton = () => {
+const ConnectWalletButton = ({ style }) => {
   const [hovering, setHovering] = useState(false);
 
   return (
@@ -29,7 +29,10 @@ const ConnectWalletButton = () => {
                     onMouseLeave={() => setHovering(false)}
                     onClick={openConnectModal}
                   >
-                    <ConnectSvg fillColor={hovering ? "#FD0101" : "#FAF400"} />
+                    <ConnectSvg
+                      fillColor={hovering ? "#FD0101" : "#FAF400"}
+                      style={style}
+                    />
                   </div>
                 );
               }
