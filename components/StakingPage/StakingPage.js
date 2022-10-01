@@ -35,11 +35,7 @@ const StakingPage = ({ openSeaData }) => {
     console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
     console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
     console.log("CHAIN ID: ", chainId);
-
-    if (!tokens.length) {
-      getZdkTokens(account);
-    }
-  }, [address, chainId]);
+  }, []);
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -52,18 +48,6 @@ const StakingPage = ({ openSeaData }) => {
     const stakedBalance = await staking.totalStaked();
     setTotalStakedPills(stakedBalance.toNumber());
     return stakedBalance.toNumber();
-  };
-
-  const isPillStakeApproved = async (
-    pillToStake = tokenId,
-    { nft, staking }
-  ) => {
-    const approvedAddress = await nft
-      .getApproved(pillToStake)
-      .catch(console.error);
-    const isApproved = approvedAddress == staking.address;
-    setApproved(isApproved);
-    return isApproved;
   };
 
   const getStakingContract = async (signerOrProvider) => {
@@ -80,20 +64,6 @@ const StakingPage = ({ openSeaData }) => {
     return { staking, sdk, nft: stakingNftContract };
   };
 
-  const getPillToStake = async (stakingNftContract) => {
-    const balance = await stakingNftContract.balanceOf(account);
-    if (balance.toNumber() > 0) {
-      const totalNftSupply = await stakingNftContract.totalSupply();
-      for (let i = 0; i < totalNftSupply; i++) {
-        const tokenOwner = await stakingNftContract.ownerOf(i);
-        if (tokenOwner === account) {
-          setTokenId(i);
-          return i;
-        }
-      }
-    }
-  };
-
   const getStakedPill = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
     const intArray = [];
@@ -107,6 +77,8 @@ const StakingPage = ({ openSeaData }) => {
 
   const load = async (signerOrProvider) => {
     setLoading(true);
+    const zdkTokens = await getZdkTokens(account);
+    setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     await getStakedBalance(contracts.staking);
     await getStakedPill(contracts.staking);
