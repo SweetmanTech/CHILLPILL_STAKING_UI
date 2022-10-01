@@ -1,5 +1,4 @@
 import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useAccount, useSigner } from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
@@ -7,36 +6,17 @@ import { stake, unstake } from "../../lib/stake";
 const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
-  const [approved, setApproved] = useState();
 
   const handleClick = async () => {
     if (staked) {
       await unstake(stakingContract, tokenId);
     } else {
-      const response = await stake(
-        stakingContract,
-        tokenId,
-        approved,
-        nftContract
-      );
+      const response = await stake(stakingContract, tokenId, nftContract);
       if (response.error) {
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
       }
     }
   };
-
-  useEffect(() => {
-    const isPillStakeApproved = async () => {
-      const approvedAddress = await nftContract.getApproved(1).catch();
-      const isApproved = approvedAddress == stakingContract.address;
-      setApproved(isApproved);
-      return isApproved;
-    };
-
-    if (nftContract) {
-      isPillStakeApproved();
-    }
-  }, [nftContract]);
 
   return (
     <>
