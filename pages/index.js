@@ -6,7 +6,6 @@ import StakingPage from "../components/StakingPage";
 import { useAccount } from "wagmi";
 import ConnectWalletButton from "../components/ConnectWalletButton";
 import LoginSpeechBubble from "../components/LoginSpeechBubble";
-import bg from "../public/speechbubble_1.svg";
 
 const Home = ({ openSeaData }) => {
   const { address } = useAccount();
