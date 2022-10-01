@@ -11,6 +11,7 @@ import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
 import { ethers } from "ethers";
+import StakingData from "../SVG/StakingData";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -118,6 +119,15 @@ const StakingPage = ({ openSeaData }) => {
             right: "50%",
             width: "25%",
           }}
+        />
+        <StakingData
+          minimumLockedValue={
+            Math.round(floorPrice * totalStakedPills * 100) / 100
+          }
+          totalChillRxStaked={totalStakedPills}
+          percentPillsStaked={
+            Math.round((totalStakedPills / 9999) * 10000) / 100
+          }
         />
       </>
 
