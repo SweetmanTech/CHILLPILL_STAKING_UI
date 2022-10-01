@@ -74,7 +74,6 @@ const StakingPage = ({ openSeaData }) => {
     const formattedChill =
       Math.round(ethers.utils.formatEther(unclaimedTokens.toString()) * 1000) /
       1000;
-    console.log("UNCLAIMED $CHILL", formattedChill);
     setUnclaimedChill(formattedChill);
     return formattedChill;
   };
