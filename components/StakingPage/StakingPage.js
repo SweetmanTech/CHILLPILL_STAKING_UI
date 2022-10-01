@@ -9,6 +9,7 @@ import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
+import TokenRow from "../SVG/TokenRow";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -134,41 +135,11 @@ const StakingPage = ({ openSeaData }) => {
         />
       </>
 
-      <Typography mt={3} variant="h3" color="white">
-        ChillRx Staking
-      </Typography>
-      <Typography variant="body2" color="white">
-        % of ChillRx Staked:{" "}
-        {parseFloat((totalStakedPills / 9999) * 100).toFixed(2)}%
-      </Typography>
-      <Typography variant="body2" color="white">
-        Total ChillRx Staked: {totalStakedPills}
-      </Typography>
-      <Typography variant="body2" color="white">
-        Minimum Value Locked: {totalStakedPills * floorPrice}ETH
-      </Typography>
-
-      {signer && !loading ? (
-        <>
-          {stakedNftCount > 0 ? (
-            <UnstakeButton
-              contract={stakingContract}
-              tokenId={tokenId}
-              onSuccess={() => load(signer)}
-            />
-          ) : (
-            <StakeButton
-              contract={stakingContract}
-              tokenId={tokenId}
-              onSuccess={() => load(signer)}
-              approved={approved}
-              nftContract={nftContract}
-            />
-          )}
-        </>
-      ) : (
-        <CircularProgress />
-      )}
+      <TokenRow
+        style={{
+          marginTop: "-30vh",
+        }}
+      />
     </Box>
   );
 };
