@@ -6,15 +6,15 @@ const ConnectSvg = ({ onClick, fillColor = "#FAF400" }) => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     x="0px"
     y="0px"
-    width={300}
+    width="25%"
     onClick={onClick}
     viewBox="0 0 2048 2048"
     style={{
       "enable-background": "new 0 0 2048 2048;",
       zIndex: 1000,
       position: "absolute",
-      top: "50vh",
-      right: "15vw",
+      top: "50%",
+      right: "20%",
     }}
     xmlSpace="preserve"
   >
