@@ -17,18 +17,6 @@ const Home = ({ openSeaData }) => {
       </Head>
 
       <main className={styles.main}>
-        {/* <Box
-          style={{
-            backgroundImage: `url(${bg.src})`,
-            width: "100%",
-            height: "100%",
-            // backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            border: "1px solid red",
-          }}
-        > */}
-        {/* </Box> */}
-
         {address ? (
           <>
             <ConnectWalletButton />
