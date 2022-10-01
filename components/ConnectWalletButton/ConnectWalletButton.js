@@ -1,6 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import ConnectSvg from "./ConnectSvg";
+import ConnectSvg from "../SVG/ConnectSvg";
 
 const ConnectWalletButton = ({ style }) => {
   const [hovering, setHovering] = useState(false);

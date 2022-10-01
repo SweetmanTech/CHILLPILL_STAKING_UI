@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 import { useAccount, useSigner } from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
@@ -7,6 +8,7 @@ import StakeButton from "./StakeButton";
 const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
+  const [hovering, setHovering] = useState(false);
 
   const handleClick = async () => {
     if (staked) {
@@ -20,12 +22,19 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   };
 
   return (
-    <Box onClick={handleClick}>
+    <Box
+      onClick={handleClick}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+    >
       <Box style={{ display: "flex" }}>
         <Typography mb={-9} variant="h3" color="white">
           token #{tokenId}
         </Typography>
-        <StakeButton style={{ width: "100px" }} />
+        <StakeButton
+          style={{ width: "100px" }}
+          fillColor={hovering ? "#FD0101" : "#FAF400"}
+        />
       </Box>
       <svg
         id="Layer_1"
