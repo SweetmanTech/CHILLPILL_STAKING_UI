@@ -7,7 +7,8 @@ import {
 } from "@decent.xyz/decent-sdk-private-v0";
 import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import ConnectWalletButton from "../ConnectWalletButton";
+import WalletConnectedSvg from "../SVG/WalletConnected";
+import SteakChatSvg from "../SVG/SteakChatSvg";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -116,7 +117,22 @@ const StakingPage = ({ openSeaData }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <ConnectWalletButton />
+      <>
+        <SteakChatSvg
+          amountOfChill="8.08"
+          style={{ position: "relative", zIndex: 0, width: "75vw" }}
+        />
+        <WalletConnectedSvg
+          style={{
+            "enable-background": "new 0 0 2048 2048;",
+            zIndex: 1000,
+            position: "absolute",
+            top: "23vw",
+            right: "50%",
+            width: "25%",
+          }}
+        />
+      </>
 
       <Typography mt={3} variant="h3" color="white">
         ChillRx Staking
