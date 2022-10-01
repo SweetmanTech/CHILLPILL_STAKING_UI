@@ -36,12 +36,7 @@ const ConnectWalletButton = ({ style }) => {
                   </div>
                 );
               }
-              return (
-                <ConnectSvg
-                  fillColor={hovering ? "#FD0101" : "#FAF400"}
-                  style={style}
-                />
-              );
+              return <ConnectButton />;
             })()}
           </div>
         );
