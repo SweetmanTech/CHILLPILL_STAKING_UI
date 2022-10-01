@@ -30,13 +30,6 @@ const StakingPage = ({ openSeaData }) => {
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
 
-  useEffect(() => {
-    console.log("STAKING CONTRACT ADDRESS: ", address);
-    console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
-    console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
-    console.log("CHAIN ID: ", chainId);
-  }, []);
-
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
     const stakedBalance = await staking.balanceOf(account);
@@ -51,25 +44,15 @@ const StakingPage = ({ openSeaData }) => {
   };
 
   const getStakingContract = async (signerOrProvider) => {
-    console.log("GETTING STAKING CONTRACT...");
     const sdk = await setupDCNTSDK(chain?.id || 1, signerOrProvider);
-    console.log("sdk", sdk);
-
     const staking = await getDCNTStaking(sdk, address);
-    console.log("staking", staking);
-
     setStakingContract(staking);
     const nftAddress = await staking.nftAddress();
-    console.log("nftAddress", nftAddress);
-
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
     setErc20ContractAddress(erc20Address);
-
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
     setNftContract(stakingNftContract);
-    console.log("NFT contract", stakingNftContract);
-
     return { staking, sdk, nft: stakingNftContract };
   };
 
