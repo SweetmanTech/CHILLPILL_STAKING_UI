@@ -10,6 +10,7 @@ import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
+import { ethers } from "ethers";
 
 const StakingPage = ({ openSeaData }) => {
   const { data: signer } = useSigner();
@@ -29,6 +30,7 @@ const StakingPage = ({ openSeaData }) => {
   const [approved, setApproved] = useState(true);
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
+  const [unclaimedChill, setUnclaimedChill] = useState("...");
 
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
@@ -64,7 +66,16 @@ const StakingPage = ({ openSeaData }) => {
     }
     setStakedTokens(intArray);
     setTokenId(stakedPills[0].toNumber());
-    return stakedPills[0].toNumber();
+    return intArray;
+  };
+
+  const getUnclaimedChill = async (staking = stakingContract, tokens) => {
+    const unclaimedTokens = await staking.earningInfo(account, tokens);
+    const formattedChill =
+      Math.round(ethers.utils.formatEther(unclaimedTokens.toString()) * 1000) /
+      1000;
+    setUnclaimedChill(formattedChill);
+    return formattedChill;
   };
 
   const load = async (signerOrProvider) => {
@@ -73,8 +84,9 @@ const StakingPage = ({ openSeaData }) => {
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     await getStakedBalance(contracts.staking);
-    await getStakedPills(contracts.staking);
+    const stakedPills = await getStakedPills(contracts.staking);
     await getTotalStakedPills(contracts.staking);
+    await getUnclaimedChill(contracts.staking, stakedPills);
     getFloorPrice();
     setLoading(false);
   };
@@ -94,7 +106,7 @@ const StakingPage = ({ openSeaData }) => {
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <>
         <SteakChatSvg
-          amountOfChill="8.08"
+          amountOfChill={unclaimedChill}
           style={{ position: "relative", zIndex: 0, width: "75vw" }}
         />
         <WalletConnectedSvg
