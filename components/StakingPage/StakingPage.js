@@ -9,7 +9,6 @@ import { StakeButton, UnstakeButton } from "../StakingButtons";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
-import mySvg from "../../public/frame.svg";
 import TokenRow from "../SVG/TokenRow";
 
 const StakingPage = ({ openSeaData }) => {
