@@ -29,11 +29,7 @@ const ConnectWalletButton = () => {
                     onMouseLeave={() => setHovering(false)}
                     onClick={openConnectModal}
                   >
-                    <ConnectSvg
-                      width={200}
-                      height={25}
-                      fillColor={hovering ? "#FD0101" : "#FAF400"}
-                    />
+                    <ConnectSvg fillColor={hovering ? "#FD0101" : "#FAF400"} />
                   </div>
                 );
               }

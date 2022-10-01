@@ -4,7 +4,8 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import StakingPage from "../components/StakingPage";
 import { useAccount } from "wagmi";
-import ConnectWalletButton from "../components/ConnectWalletButton/ConnectWalletButton";
+import ConnectWalletButton from "../components/ConnectWalletButton";
+import LoginSpeechBubble from "../components/LoginSpeechBubble";
 
 const Home = ({ openSeaData }) => {
   const { address } = useAccount();
@@ -16,8 +17,18 @@ const Home = ({ openSeaData }) => {
       </Head>
 
       <main className={styles.main}>
-        <ConnectWalletButton />
-        {address && <StakingPage openSeaData={openSeaData} />}
+        {address ? (
+          <>
+            <ConnectWalletButton />
+
+            <StakingPage openSeaData={openSeaData} />
+          </>
+        ) : (
+          <>
+            <LoginSpeechBubble />
+            <ConnectWalletButton />
+          </>
+        )}
       </main>
     </Box>
   );
