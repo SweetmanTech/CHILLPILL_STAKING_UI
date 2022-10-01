@@ -64,7 +64,7 @@ const StakingPage = ({ openSeaData }) => {
     return { staking, sdk, nft: stakingNftContract };
   };
 
-  const getStakedPill = async (staking = stakingContract) => {
+  const getStakedPills = async (staking = stakingContract) => {
     const stakedPills = await staking.tokensOfOwner(account);
     const intArray = [];
     for (let i = 0; i < stakedPills.length; i++) {
@@ -81,7 +81,7 @@ const StakingPage = ({ openSeaData }) => {
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     await getStakedBalance(contracts.staking);
-    await getStakedPill(contracts.staking);
+    await getStakedPills(contracts.staking);
     await getTotalStakedPills(contracts.staking);
     getFloorPrice();
     setLoading(false);
