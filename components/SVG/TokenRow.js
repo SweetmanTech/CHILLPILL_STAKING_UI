@@ -1,7 +1,8 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useAccount, useSigner } from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
+import StakeButton from "./StakeButton";
 
 const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const { data: signer } = useSigner();
@@ -19,16 +20,18 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   };
 
   return (
-    <>
-      <Typography mb={-9} variant="h3" color="white">
-        token #{tokenId}
-      </Typography>
+    <Box onClick={handleClick}>
+      <Box style={{ display: "flex" }}>
+        <Typography mb={-9} variant="h3" color="white">
+          token #{tokenId}
+        </Typography>
+        <StakeButton style={{ width: "100px" }} />
+      </Box>
       <svg
         id="Layer_1"
         xmlns="http://www.w3.org/1000/svg"
         viewBox="0 0 2048 2048"
         style={style}
-        onClick={handleClick}
       >
         <g>
           <path
@@ -42,7 +45,7 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
         </g>
         <path d="M610.94,794.52c1.04,91.46,2.14,213.41,2.82,304.41-.04,36.33-.65,74.41-1.75,110.69-.36,9.22-.61,18.45-1.07,27.67,0,0-.6,0-.6,0-.46-9.22-.71-18.45-1.07-27.67-1.11-36.26-1.72-74.38-1.75-110.69,.3-50.07,1.3-142.8,1.62-193.71,0,0,1.2-110.69,1.2-110.69,0,0,.6,0,.6,0h0Z" />
       </svg>
-    </>
+    </Box>
   );
 };
 
