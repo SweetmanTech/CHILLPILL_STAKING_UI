@@ -4,6 +4,8 @@ import { useAccount, useSigner } from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
 import StakeButton from "./StakeButton";
+import StakedButton from "./StakedButton";
+import UnstakeButton from "./UnstakeButton";
 
 const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const { data: signer } = useSigner();
@@ -31,10 +33,21 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
         <Typography mb={-9} variant="h3" color="white">
           token #{tokenId}
         </Typography>
-        <StakeButton
-          style={{ width: "100px" }}
-          fillColor={hovering ? "#FD0101" : "#FAF400"}
-        />
+        {staked ? (
+          <>
+            {" "}
+            {hovering ? (
+              <UnstakeButton style={{ width: "100px" }} />
+            ) : (
+              <StakedButton style={{ width: "100px" }} />
+            )}
+          </>
+        ) : (
+          <StakeButton
+            style={{ width: "100px" }}
+            fillColor={hovering ? "#FD0101" : "#FAF400"}
+          />
+        )}
       </Box>
       <svg
         id="Layer_1"
