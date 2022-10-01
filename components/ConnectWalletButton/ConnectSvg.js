@@ -9,7 +9,13 @@ const ConnectSvg = ({ onClick, fillColor = "#FAF400" }) => (
     width={300}
     onClick={onClick}
     viewBox="0 0 2048 2048"
-    style={{ "enable-background": "new 0 0 2048 2048;" }}
+    style={{
+      "enable-background": "new 0 0 2048 2048;",
+      zIndex: 1000,
+      position: "absolute",
+      top: "50vh",
+      right: "15vw",
+    }}
     xmlSpace="preserve"
   >
     <g>
