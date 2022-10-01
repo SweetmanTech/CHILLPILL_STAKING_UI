@@ -84,9 +84,9 @@ const StakingPage = ({ openSeaData }) => {
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     await getStakedBalance(contracts.staking);
-    const tokeList = await getStakedPills(contracts.staking);
+    const stakedPills = await getStakedPills(contracts.staking);
     await getTotalStakedPills(contracts.staking);
-    await getUnclaimedChill(contracts.staking, tokeList);
+    await getUnclaimedChill(contracts.staking, stakedPills);
     getFloorPrice();
     setLoading(false);
   };
