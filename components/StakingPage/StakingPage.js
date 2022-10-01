@@ -30,13 +30,6 @@ const StakingPage = ({ openSeaData }) => {
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
 
-  useEffect(() => {
-    console.log("STAKING CONTRACT ADDRESS: ", address);
-    console.log("NFT CONTRACT ADDRESS: ", nftContractAddress);
-    console.log("$CHILL ERC20 ADDRESS: ", erc20ContractAddress);
-    console.log("CHAIN ID: ", chainId);
-  }, []);
-
   const getStakedBalance = async (staking = stakingContract) => {
     if (!signer) return;
     const stakedBalance = await staking.balanceOf(account);
@@ -58,7 +51,6 @@ const StakingPage = ({ openSeaData }) => {
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
     setErc20ContractAddress(erc20Address);
-
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
     setNftContract(stakingNftContract);
     return { staking, sdk, nft: stakingNftContract };
@@ -128,7 +120,8 @@ const StakingPage = ({ openSeaData }) => {
             key={myTokenId}
             tokenId={myTokenId}
             style={{
-              marginTop: "-30vh",
+              marginTop: "-30%",
+              marginBottom: "-15%",
             }}
           />
         );
