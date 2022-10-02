@@ -14,7 +14,14 @@ import StakeButton from "./StakeButton";
 import StakedButton from "./StakedButton";
 import UnstakeButton from "./UnstakeButton";
 
-const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
+const TokenRow = ({
+  style,
+  tokenId,
+  stakingContract,
+  nftContract,
+  staked,
+  onSuccess,
+}) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { address: account } = useAccount();
@@ -35,10 +42,15 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
       return;
     }
     if (staked) {
-      await unstake(stakingContract, tokenId);
+      await unstake(stakingContract, tokenId, onSuccess);
     } else {
-      const response = await stake(stakingContract, tokenId, nftContract);
-      if (response.error) {
+      const response = await stake(
+        stakingContract,
+        tokenId,
+        nftContract,
+        onSuccess
+      );
+      if (response?.error) {
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
       }
     }

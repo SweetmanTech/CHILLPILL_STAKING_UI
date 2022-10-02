@@ -141,6 +141,7 @@ const StakingPage = ({ openSeaData }) => {
             staked={isStaked}
             key={myTokenId}
             tokenId={myTokenId}
+            onSuccess={() => load(signer)}
             style={{
               marginTop: "-30%",
               marginBottom: "-15%",
