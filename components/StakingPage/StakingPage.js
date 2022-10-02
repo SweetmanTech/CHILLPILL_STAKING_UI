@@ -80,7 +80,6 @@ const StakingPage = ({ openSeaData }) => {
   };
 
   const load = async (signerOrProvider) => {
-    console.log("LOADING");
     setLoading(true);
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
