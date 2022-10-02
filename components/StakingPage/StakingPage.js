@@ -80,6 +80,7 @@ const StakingPage = ({ openSeaData }) => {
   };
 
   const load = async (signerOrProvider) => {
+    console.log("LOADING");
     setLoading(true);
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
@@ -141,6 +142,7 @@ const StakingPage = ({ openSeaData }) => {
             staked={isStaked}
             key={myTokenId}
             tokenId={myTokenId}
+            onSuccess={() => load(signer)}
             style={{
               marginTop: "-30%",
               marginBottom: "-15%",
