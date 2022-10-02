@@ -1,6 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { useAccount, useSigner } from "wagmi";
+import { toast } from "react-toastify";
+import {
+  allChains,
+  useAccount,
+  useNetwork,
+  useSigner,
+  useSwitchNetwork,
+} from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
 import StakeButton from "./StakeButton";
@@ -9,10 +16,29 @@ import UnstakeButton from "./UnstakeButton";
 
 const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
   const { data: signer } = useSigner();
+  const { chain } = useNetwork();
   const { address: account } = useAccount();
+  const { switchNetwork } = useSwitchNetwork();
   const [hovering, setHovering] = useState(false);
 
   const handleClick = async () => {
+    if (!signer) {
+      toast.error("please connect wallet");
+      return;
+    }
+    console.log("chain.id", chain.id);
+    console.log(
+      "process.env.NEXT_PUBLIC_CHAIN_ID",
+      process.env.NEXT_PUBLIC_CHAIN_ID
+    );
+    if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
+      await switchNetwork(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
+      const myChain = allChains.find(
+        (blockchain) => blockchain.id == process.env.NEXT_PUBLIC_CHAIN_ID
+      );
+      toast.error(`Please connect to ${myChain.name} and try again`);
+      return;
+    }
     if (staked) {
       await unstake(stakingContract, tokenId);
     } else {
