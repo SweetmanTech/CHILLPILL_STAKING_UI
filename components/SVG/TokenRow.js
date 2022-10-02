@@ -26,11 +26,6 @@ const TokenRow = ({ style, tokenId, stakingContract, nftContract, staked }) => {
       toast.error("please connect wallet");
       return;
     }
-    console.log("chain.id", chain.id);
-    console.log(
-      "process.env.NEXT_PUBLIC_CHAIN_ID",
-      process.env.NEXT_PUBLIC_CHAIN_ID
-    );
     if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
       await switchNetwork(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
       const myChain = allChains.find(
