@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: 'MoreSugarThin';
+  src: URL('/MoreSugar-Thin.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'MoreSugarRegular';
+  src: URL('/MoreSugar-Regular.ttf') format('truetype');
+}

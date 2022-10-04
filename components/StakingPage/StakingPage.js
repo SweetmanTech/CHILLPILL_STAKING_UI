@@ -10,6 +10,7 @@ import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
+import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
 
@@ -110,16 +111,7 @@ const StakingPage = ({ openSeaData }) => {
           amountOfChill={unclaimedChill}
           style={{ position: "relative", zIndex: 0, width: "75vw" }}
         />
-        <WalletConnectedSvg
-          style={{
-            "enable-background": "new 0 0 2048 2048;",
-            zIndex: 1000,
-            position: "absolute",
-            top: "23vw",
-            right: "50%",
-            width: "25%",
-          }}
-        />
+
         <StakingData
           minimumLockedValue={
             Math.round(floorPrice * totalStakedPills * 100) / 100
@@ -128,11 +120,18 @@ const StakingPage = ({ openSeaData }) => {
           percentPillsStaked={
             Math.round((totalStakedPills / 9999) * 10000) / 100
           }
+          style={{
+            width: "100vw",
+            position: "fixed",
+            bottom: "0px",
+            right: "0px",
+          }}
         />
       </>
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
+        const imageUrl = getIpfsLink(token.token.image.url);
         const isStaked = stakedTokens.includes(parseInt(myTokenId));
         return (
           <TokenRow
@@ -141,11 +140,9 @@ const StakingPage = ({ openSeaData }) => {
             staked={isStaked}
             key={myTokenId}
             tokenId={myTokenId}
+            image={imageUrl}
             onSuccess={() => load(signer)}
-            style={{
-              marginTop: "-30%",
-              marginBottom: "-15%",
-            }}
+            style={{}}
           />
         );
       })}
