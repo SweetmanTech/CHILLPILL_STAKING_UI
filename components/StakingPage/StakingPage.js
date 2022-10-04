@@ -142,10 +142,7 @@ const StakingPage = ({ openSeaData }) => {
             key={myTokenId}
             tokenId={myTokenId}
             onSuccess={() => load(signer)}
-            style={{
-              marginTop: "-30%",
-              marginBottom: "-15%",
-            }}
+            style={{}}
           />
         );
       })}
