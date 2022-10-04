@@ -81,11 +81,7 @@ const TokenRow = ({
   }
 
   return (
-    <Box
-      onClick={handleClick}
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-    >
+    <Box>
       <Box
         style={{
           position: "relative",
@@ -185,7 +181,11 @@ const TokenRow = ({
             d="M1258.02,126.76c-1.04,24.26-13.04,37.7-31.1,34.09-12.31-2.46-23.04-8.48-31.11-18.26-9.23-11.2-13.88-23.98-12.49-38.83,1.78-19.1,19.74-31.58,37.97-25.97,25.44,7.83,37.79,24.28,36.73,48.97Z"
           />
         </g>
-        <g>
+        <g
+          onClick={handleClick}
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
           <g>
             <path
               style={{ fill: "#040402" }}
