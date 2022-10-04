@@ -7,7 +7,6 @@ import { publicProvider } from 'wagmi/providers/public';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const { chains, provider, webSocketProvider } = configureChains(
   [
     chain.goerli
@@ -34,8 +33,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider coolMode chains={chains} theme={midnightTheme({overlayBlur: 'small'})}>
         <Component {...pageProps} />
-        <link rel="stylesheet" href="./style.css" />
-
         <ToastContainer />
       </RainbowKitProvider>
     </WagmiConfig>
