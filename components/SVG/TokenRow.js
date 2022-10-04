@@ -89,7 +89,7 @@ const TokenRow = ({
       <Box
         style={{
           position: "relative",
-          top: isMobile ? 62 : 170,
+          top: isMobile ? 62 : 210,
           left: isMobile ? 20 : 50,
           height: isMobile ? "50px" : "150px",
           width: isMobile ? "50px" : "150px",
