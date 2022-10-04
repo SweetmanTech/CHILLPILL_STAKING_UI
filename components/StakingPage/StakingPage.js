@@ -128,6 +128,12 @@ const StakingPage = ({ openSeaData }) => {
           percentPillsStaked={
             Math.round((totalStakedPills / 9999) * 10000) / 100
           }
+          style={{
+            width: "100vw",
+            position: "fixed",
+            bottom: "0px",
+            right: "0px",
+          }}
         />
       </>
 
