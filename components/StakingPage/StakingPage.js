@@ -110,16 +110,7 @@ const StakingPage = ({ openSeaData }) => {
           amountOfChill={unclaimedChill}
           style={{ position: "relative", zIndex: 0, width: "75vw" }}
         />
-        <WalletConnectedSvg
-          style={{
-            "enable-background": "new 0 0 2048 2048;",
-            zIndex: 1000,
-            position: "absolute",
-            top: "23vw",
-            right: "50%",
-            width: "25%",
-          }}
-        />
+
         <StakingData
           minimumLockedValue={
             Math.round(floorPrice * totalStakedPills * 100) / 100
