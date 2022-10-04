@@ -131,9 +131,7 @@ const StakingPage = ({ openSeaData }) => {
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
-        console.log("ZORA TOKEN", token.token);
         const imageUrl = getIpfsLink(token.token.image.url);
-        console.log("IMAGE URL", imageUrl);
         const isStaked = stakedTokens.includes(parseInt(myTokenId));
         return (
           <TokenRow
