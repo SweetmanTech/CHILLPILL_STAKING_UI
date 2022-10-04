@@ -125,6 +125,7 @@ const StakingPage = ({ openSeaData }) => {
             position: "fixed",
             bottom: "0px",
             right: "0px",
+            zIndex: 1000,
           }}
         />
       </>
