@@ -10,6 +10,7 @@ import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
+import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
 
@@ -130,6 +131,9 @@ const StakingPage = ({ openSeaData }) => {
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
+        console.log("ZORA TOKEN", token.token);
+        const imageUrl = getIpfsLink(token.token.image.url);
+        console.log("IMAGE URL", imageUrl);
         const isStaked = stakedTokens.includes(parseInt(myTokenId));
         return (
           <TokenRow
@@ -138,6 +142,7 @@ const StakingPage = ({ openSeaData }) => {
             staked={isStaked}
             key={myTokenId}
             tokenId={myTokenId}
+            image={imageUrl}
             onSuccess={() => load(signer)}
             style={{}}
           />

@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -20,6 +21,7 @@ const TokenRow = ({
   stakingContract,
   nftContract,
   staked,
+  image,
   onSuccess,
 }) => {
   const { data: signer } = useSigner();
@@ -27,6 +29,7 @@ const TokenRow = ({
   const { address: account } = useAccount();
   const { switchNetwork } = useSwitchNetwork();
   const [hovering, setHovering] = useState(false);
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleClick = async () => {
     if (!signer) {
@@ -83,6 +86,18 @@ const TokenRow = ({
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
+      <Box
+        style={{
+          position: "relative",
+          top: isMobile ? 62 : 170,
+          left: isMobile ? 20 : 50,
+          height: isMobile ? "50px" : "150px",
+          width: isMobile ? "50px" : "150px",
+        }}
+      >
+        <Image src={image} layout="fill" objectFit="cover" alt="chillrx" />
+      </Box>
+
       <svg
         id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
