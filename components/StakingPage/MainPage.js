@@ -24,22 +24,13 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const [nftContractAddress, setNftContractAddress] = useState();
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
-  const [stakedNftCount, setStakedNftCount] = useState();
   const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [tokenId, setTokenId] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [approved, setApproved] = useState(true);
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
-
-  const getStakedBalance = async (staking = stakingContract) => {
-    if (!signer) return;
-    const stakedBalance = await staking.balanceOf(account);
-    setStakedNftCount(stakedBalance.toNumber());
-    return stakedBalance.toNumber();
-  };
 
   const getTotalStakedPills = async (staking = stakingContract) => {
     const stakedBalance = await staking.totalStaked();
@@ -67,7 +58,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
       intArray.push(stakedPills[i].toNumber());
     }
     setStakedTokens(intArray);
-    setTokenId(stakedPills[0].toNumber());
+    setTokenId(stakedPills[0]?.toNumber());
     return intArray;
   };
 
@@ -85,10 +76,12 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
-    await getStakedBalance(contracts.staking);
-    const stakedPills = await getStakedPills(contracts.staking);
+    if (account) {
+      console.log("account", account);
+      const stakedPills = await getStakedPills(contracts.staking);
+      await getUnclaimedChill(contracts.staking, stakedPills);
+    }
     await getTotalStakedPills(contracts.staking);
-    await getUnclaimedChill(contracts.staking, stakedPills);
     getFloorPrice();
     setLoading(false);
   };
@@ -103,6 +96,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     if (!signer) return;
     load(signer);
   }, [address, chain, chainId, signer]);
+  console.log("totalStakedPills", totalStakedPills);
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
