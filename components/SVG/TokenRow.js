@@ -23,6 +23,7 @@ const TokenRow = ({
   staked,
   image,
   onSuccess,
+  setPendingTxStep,
 }) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
@@ -44,19 +45,23 @@ const TokenRow = ({
       toast.error(`Please connect to ${myChain.name} and try again`);
       return;
     }
+    setPendingTxStep(1);
     if (staked) {
+      setPendingTxStep(4);
       await unstake(stakingContract, tokenId, onSuccess);
     } else {
       const response = await stake(
         stakingContract,
         tokenId,
         nftContract,
-        onSuccess
+        onSuccess,
+        setPendingTxStep
       );
       if (response?.error) {
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
       }
     }
+    setPendingTxStep(0);
   };
 
   let buttonFill;
