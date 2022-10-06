@@ -96,7 +96,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     if (!signer) return;
     load(signer);
   }, [address, chain, chainId, signer]);
-  console.log("totalStakedPills", totalStakedPills);
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
@@ -107,10 +106,16 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
       <StakingData
         minimumLockedValue={
-          Math.round(floorPrice * totalStakedPills * 100) / 100
+          totalStakedPills
+            ? Math.round(floorPrice * totalStakedPills * 100) / 100
+            : "..."
         }
-        totalChillRxStaked={totalStakedPills}
-        percentPillsStaked={Math.round((totalStakedPills / 9999) * 10000) / 100}
+        totalChillRxStaked={totalStakedPills || "..."}
+        percentPillsStaked={
+          totalStakedPills
+            ? Math.round((totalStakedPills / 9999) * 10000) / 100
+            : "..."
+        }
         style={{
           width: "100vw",
           position: "fixed",
