@@ -100,29 +100,25 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <>
-        <SteakChatSvg
-          amountOfChill={unclaimedChill}
-          style={{ position: "relative", zIndex: 0, width: "75vw" }}
-        />
+      <SteakChatSvg
+        amountOfChill={unclaimedChill}
+        style={{ position: "relative", zIndex: 0, width: "75vw" }}
+      />
 
-        <StakingData
-          minimumLockedValue={
-            Math.round(floorPrice * totalStakedPills * 100) / 100
-          }
-          totalChillRxStaked={totalStakedPills}
-          percentPillsStaked={
-            Math.round((totalStakedPills / 9999) * 10000) / 100
-          }
-          style={{
-            width: "100vw",
-            position: "fixed",
-            bottom: "0px",
-            right: "0px",
-            zIndex: 1000,
-          }}
-        />
-      </>
+      <StakingData
+        minimumLockedValue={
+          Math.round(floorPrice * totalStakedPills * 100) / 100
+        }
+        totalChillRxStaked={totalStakedPills}
+        percentPillsStaked={Math.round((totalStakedPills / 9999) * 10000) / 100}
+        style={{
+          width: "100vw",
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          zIndex: 1000,
+        }}
+      />
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
