@@ -77,7 +77,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
-      console.log("account", account);
       const stakedPills = await getStakedPills(contracts.staking);
       await getUnclaimedChill(contracts.staking, stakedPills);
     }
