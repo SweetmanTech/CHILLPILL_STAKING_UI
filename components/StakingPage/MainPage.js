@@ -13,6 +13,7 @@ import { getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
+import StakeAllButton from "../SVG/StakeAllButton";
 
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
@@ -129,6 +130,20 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
           }}
         />
       </>
+
+      <StakeAllButton
+        stakingContract={stakingContract}
+        nftContract={nftContract}
+        staked={false}
+        tokenId={1}
+        image={getIpfsLink(tokens?.[0]?.token?.image?.url)}
+        onSuccess={() => {
+          load(signer);
+          setPendingTxStep(0);
+        }}
+        style={{}}
+        setPendingTxStep={setPendingTxStep}
+      />
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
