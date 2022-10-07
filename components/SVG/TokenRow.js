@@ -55,7 +55,8 @@ const TokenRow = ({
         tokenId,
         nftContract,
         onSuccess,
-        setPendingTxStep
+        setPendingTxStep,
+        account
       );
       if (response?.error) {
         await mintTestnetNft(nftContract.address, account, tokenId, signer);
