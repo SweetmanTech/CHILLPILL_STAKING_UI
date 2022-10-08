@@ -40,11 +40,9 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const getStakingContract = async (signerOrProvider) => {
-    console.log("signerOrProvider", signerOrProvider);
     const sdk = await setupDCNTSDK(chain?.id || 1, signerOrProvider);
     const staking = await getDCNTStaking(sdk, address);
     setStakingContract(staking);
-    console.log("STAKING CONTRACT", staking);
     const nftAddress = await staking.nftAddress();
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
