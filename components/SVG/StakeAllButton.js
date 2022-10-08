@@ -29,7 +29,7 @@ const StakeAllButton = ({
   const { address: account } = useAccount();
   const { switchNetwork } = useSwitchNetwork();
   const [hovering, setHovering] = useState(false);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  console.log("TOKENS TO STAKE", tokensToStake);
 
   const handleClick = async () => {
     if (!signer) {
@@ -50,10 +50,12 @@ const StakeAllButton = ({
       console.log("HOW TO HANDLE UNSTAKE ALL? HIDE BUTTON?");
       // await unstake(stakingContract, tokenId, onSuccess);
     } else {
+      const tokenIds = tokensToStake.map((token) => token.token.tokenId);
+      console.log("tokenIds", tokenIds);
       const response = await stakeAll(
         stakingContract,
         nftContract,
-        tokensToStake,
+        tokenIds,
         account,
         onSuccess,
         setPendingTxStep

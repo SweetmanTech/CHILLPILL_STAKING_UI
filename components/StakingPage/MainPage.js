@@ -6,7 +6,6 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { Box } from "@mui/material";
-import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
@@ -28,9 +27,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const [stakedNftCount, setStakedNftCount] = useState();
   const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
-  const [tokenId, setTokenId] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [approved, setApproved] = useState(true);
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
@@ -68,7 +64,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
       intArray.push(stakedPills[i].toNumber());
     }
     setStakedTokens(intArray);
-    setTokenId(stakedPills[0].toNumber());
     return intArray;
   };
 
@@ -82,7 +77,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const load = async (signerOrProvider) => {
-    setLoading(true);
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
@@ -91,7 +85,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     await getTotalStakedPills(contracts.staking);
     await getUnclaimedChill(contracts.staking, stakedPills);
     getFloorPrice();
-    setLoading(false);
   };
 
   const getFloorPrice = () => {
@@ -135,7 +128,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         stakingContract={stakingContract}
         nftContract={nftContract}
         staked={false}
-        tokenId={1}
+        tokensToStake={tokens}
         image={getIpfsLink(tokens?.[0]?.token?.image?.url)}
         onSuccess={() => {
           load(signer);
