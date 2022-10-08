@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { allChains, useAccount, useSigner } from "wagmi";
+import { allChains, useAccount, useNetwork, useSigner } from "wagmi";
 import {
   getDCNTStaking,
   getDCNT721A,
@@ -18,6 +18,7 @@ import ClaimButton from "../SVG/ClaimButton";
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
+  const { chain: activeChain } = useNetwork();
   const chainId = process.env.NEXT_PUBLIC_CHAIN_ID;
   const address = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS;
   const chain = allChains.find((chain) => chain.id == chainId);
@@ -39,9 +40,11 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const getStakingContract = async (signerOrProvider) => {
+    console.log("signerOrProvider", signerOrProvider);
     const sdk = await setupDCNTSDK(chain?.id || 1, signerOrProvider);
     const staking = await getDCNTStaking(sdk, address);
     setStakingContract(staking);
+    console.log("STAKING CONTRACT", staking);
     const nftAddress = await staking.nftAddress();
     setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
@@ -94,7 +97,17 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     if (!chainId) return;
 
     if (!signer) return;
-    load(signer);
+    const goerliRpc = "https://ethereum-goerli-rpc.allthatnode.com";
+    const isCorrectNetwork = chain.id === activeChain.id;
+    console.log("isCorrectNetwork", isCorrectNetwork);
+    const provider =
+      chain.id === 1
+        ? { chainId: chain.id }
+        : ethers.getDefaultProvider(goerliRpc);
+    console.log("provider", provider);
+    const signerOrProvider = isCorrectNetwork ? signer : provider;
+    console.log("SIGNERORPROVIDER", signerOrProvider);
+    load(signerOrProvider);
   }, [address, chain, chainId, signer]);
 
   return (
@@ -125,29 +138,37 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         }}
       />
 
-      <ClaimButton
-        style={{ width: "200px" }}
-        stakingContract={stakingContract}
-        stakedTokenIds={stakedTokens}
-        setPendingTxStep={setPendingTxStep}
-        onSuccess={() => {
-          load(signer);
-          setPendingTxStep(0);
+      <Box
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
         }}
-        unclaimedChill={unclaimedChill}
-      />
+      >
+        <ClaimButton
+          style={{}}
+          stakingContract={stakingContract}
+          stakedTokenIds={stakedTokens}
+          setPendingTxStep={setPendingTxStep}
+          onSuccess={() => {
+            load(signer);
+            setPendingTxStep(0);
+          }}
+          unclaimedChill={unclaimedChill}
+        />
 
-      <StakeAllButton
-        stakingContract={stakingContract}
-        nftContract={nftContract}
-        tokensToStake={unstakedTokens}
-        onSuccess={() => {
-          load(signer);
-          setPendingTxStep(0);
-        }}
-        style={{}}
-        setPendingTxStep={setPendingTxStep}
-      />
+        <StakeAllButton
+          stakingContract={stakingContract}
+          nftContract={nftContract}
+          tokensToStake={unstakedTokens}
+          onSuccess={() => {
+            load(signer);
+            setPendingTxStep(0);
+          }}
+          style={{}}
+          setPendingTxStep={setPendingTxStep}
+        />
+      </Box>
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;

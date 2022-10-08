@@ -41,7 +41,7 @@ const TxModal = ({ pendingTxStep }) => {
           gap: 15,
         }}
       >
-        <h2>Staking Pill</h2>
+        <h2>Staking Pill(s)</h2>
         {pendingTxStep > 3 ? (
           <CheckCircleIcon />
         ) : (
