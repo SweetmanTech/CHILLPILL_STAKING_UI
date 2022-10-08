@@ -27,6 +27,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [tokens, setTokens] = useState([]);
+  const [unstakedTokens, setUnstakedTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
 
@@ -74,6 +75,10 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
       const stakedPills = await getStakedPills(contracts.staking);
+      const stakeable = zdkTokens.filter(
+        (pill) => stakedPills.indexOf(parseInt(pill.token.tokenId)) < 0
+      );
+      setUnstakedTokens(stakeable);
       await getUnclaimedChill(contracts.staking, stakedPills);
     }
     await getTotalStakedPills(contracts.staking);
@@ -122,7 +127,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
       <StakeAllButton
         stakingContract={stakingContract}
         nftContract={nftContract}
-        tokensToStake={tokens}
+        tokensToStake={unstakedTokens}
         onSuccess={() => {
           load(signer);
           setPendingTxStep(0);
