@@ -93,21 +93,21 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     setFloorPrice(openSeaData.collection.stats.floor_price);
   };
 
-  useEffect(() => {
-    if (!chainId) return;
-
-    if (!signer) return;
+  const getSignerOrProvider = () => {
     const goerliRpc = "https://ethereum-goerli-rpc.allthatnode.com";
     const isCorrectNetwork = chain.id === activeChain.id;
-    console.log("isCorrectNetwork", isCorrectNetwork);
     const provider =
       chain.id === 1
         ? { chainId: chain.id }
         : ethers.getDefaultProvider(goerliRpc);
-    console.log("provider", provider);
-    const signerOrProvider = isCorrectNetwork ? signer : provider;
-    console.log("SIGNERORPROVIDER", signerOrProvider);
-    load(signerOrProvider);
+    return isCorrectNetwork ? signer : provider;
+  };
+
+  useEffect(() => {
+    if (!chainId) return;
+
+    if (!signer) return;
+    load(getSignerOrProvider());
   }, [address, chain, chainId, signer]);
 
   return (
