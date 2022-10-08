@@ -6,13 +6,13 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { Box } from "@mui/material";
-import WalletConnectedSvg from "../SVG/WalletConnected";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
+import StakeAllButton from "../SVG/StakeAllButton";
 
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
@@ -26,9 +26,8 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
-  const [tokenId, setTokenId] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [tokens, setTokens] = useState([]);
+  const [unstakedTokens, setUnstakedTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
 
@@ -58,7 +57,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
       intArray.push(stakedPills[i].toNumber());
     }
     setStakedTokens(intArray);
-    setTokenId(stakedPills[0]?.toNumber());
     return intArray;
   };
 
@@ -72,17 +70,19 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const load = async (signerOrProvider) => {
-    setLoading(true);
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
       const stakedPills = await getStakedPills(contracts.staking);
+      const stakeable = zdkTokens.filter(
+        (pill) => stakedPills.indexOf(parseInt(pill.token.tokenId)) < 0
+      );
+      setUnstakedTokens(stakeable);
       await getUnclaimedChill(contracts.staking, stakedPills);
     }
     await getTotalStakedPills(contracts.staking);
     getFloorPrice();
-    setLoading(false);
   };
 
   const getFloorPrice = () => {
@@ -122,6 +122,18 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
           right: "0px",
           zIndex: 1000,
         }}
+      />
+
+      <StakeAllButton
+        stakingContract={stakingContract}
+        nftContract={nftContract}
+        tokensToStake={unstakedTokens}
+        onSuccess={() => {
+          load(signer);
+          setPendingTxStep(0);
+        }}
+        style={{}}
+        setPendingTxStep={setPendingTxStep}
       />
 
       {tokens.map((token) => {
