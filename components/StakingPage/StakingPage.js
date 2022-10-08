@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ClaimTxModal from "./ClaimTxModal";
 import MainPage from "./MainPage";
 import TxModal from "./TxModal";
 import UnstakeTxModal from "./UnstakeTxModal";
@@ -11,7 +12,14 @@ const StakingPage = ({ openSeaData }) => {
       {pendingTxStep > 0 ? (
         <>
           {pendingTxStep > 3 ? (
-            <UnstakeTxModal pendingTxStep={pendingTxStep} />
+            <>
+              {" "}
+              {pendingTxStep > 4 ? (
+                <ClaimTxModal pendingTxStep={pendingTxStep} />
+              ) : (
+                <UnstakeTxModal pendingTxStep={pendingTxStep} />
+              )}{" "}
+            </>
           ) : (
             <TxModal pendingTxStep={pendingTxStep} />
           )}
