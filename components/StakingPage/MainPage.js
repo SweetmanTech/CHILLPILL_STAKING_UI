@@ -13,6 +13,7 @@ import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
 import StakeAllButton from "../SVG/StakeAllButton";
+import ClaimButton from "../SVG/ClaimButton";
 
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
@@ -122,6 +123,18 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
           right: "0px",
           zIndex: 1000,
         }}
+      />
+
+      <ClaimButton
+        style={{ width: "200px" }}
+        stakingContract={stakingContract}
+        stakedTokenIds={stakedTokens}
+        setPendingTxStep={setPendingTxStep}
+        onSuccess={() => {
+          load(signer);
+          setPendingTxStep(0);
+        }}
+        unclaimedChill={unclaimedChill}
       />
 
       <StakeAllButton
