@@ -56,7 +56,7 @@ const StakingData = ({
             transform="translate(1318.29 46.9)"
           >
             <tspan x="0" y="0">
-              % OF PILLS STAKED
+              % OF PILLS STAKED:
             </tspan>
           </text>
           <text
@@ -64,7 +64,7 @@ const StakingData = ({
               fontSize: "21.91px",
               fontFamily: "MoreSugarRegular, More Sugar",
             }}
-            transform="translate(1550 46.9)"
+            transform="translate(1560 46.9)"
           >
             <tspan x="0" y="0">
               {percentPillsStaked}%
@@ -86,7 +86,7 @@ const StakingData = ({
               fontSize: "21.91px",
               fontFamily: "MoreSugarRegular, More Sugar",
             }}
-            transform="translate(920 45.41)"
+            transform="translate(940 45.41)"
           >
             <tspan x="0" y="0">
               {totalChillRxStaked} pills

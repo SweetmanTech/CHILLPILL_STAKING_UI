@@ -24,19 +24,11 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const [nftContractAddress, setNftContractAddress] = useState();
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
-  const [stakedNftCount, setStakedNftCount] = useState();
   const [totalStakedPills, setTotalStakedPills] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
-
-  const getStakedBalance = async (staking = stakingContract) => {
-    if (!signer) return;
-    const stakedBalance = await staking.balanceOf(account);
-    setStakedNftCount(stakedBalance.toNumber());
-    return stakedBalance.toNumber();
-  };
 
   const getTotalStakedPills = async (staking = stakingContract) => {
     const stakedBalance = await staking.totalStaked();
@@ -80,10 +72,11 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     const zdkTokens = await getZdkTokens(account);
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
-    await getStakedBalance(contracts.staking);
-    const stakedPills = await getStakedPills(contracts.staking);
+    if (account) {
+      const stakedPills = await getStakedPills(contracts.staking);
+      await getUnclaimedChill(contracts.staking, stakedPills);
+    }
     await getTotalStakedPills(contracts.staking);
-    await getUnclaimedChill(contracts.staking, stakedPills);
     getFloorPrice();
   };
 
@@ -100,29 +93,31 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <>
-        <SteakChatSvg
-          amountOfChill={unclaimedChill}
-          style={{ position: "relative", zIndex: 0, width: "75vw" }}
-        />
+      <SteakChatSvg
+        amountOfChill={unclaimedChill}
+        style={{ position: "relative", zIndex: 0, width: "75vw" }}
+      />
 
-        <StakingData
-          minimumLockedValue={
-            Math.round(floorPrice * totalStakedPills * 100) / 100
-          }
-          totalChillRxStaked={totalStakedPills}
-          percentPillsStaked={
-            Math.round((totalStakedPills / 9999) * 10000) / 100
-          }
-          style={{
-            width: "100vw",
-            position: "fixed",
-            bottom: "0px",
-            right: "0px",
-            zIndex: 1000,
-          }}
-        />
-      </>
+      <StakingData
+        minimumLockedValue={
+          totalStakedPills
+            ? Math.round(floorPrice * totalStakedPills * 100) / 100
+            : "..."
+        }
+        totalChillRxStaked={totalStakedPills || "..."}
+        percentPillsStaked={
+          totalStakedPills
+            ? Math.round((totalStakedPills / 9999) * 10000) / 100
+            : "..."
+        }
+        style={{
+          width: "100vw",
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          zIndex: 1000,
+        }}
+      />
 
       <StakeAllButton
         stakingContract={stakingContract}
