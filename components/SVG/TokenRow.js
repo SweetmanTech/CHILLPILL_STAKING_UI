@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -11,9 +11,6 @@ import {
 } from "wagmi";
 import { mintTestnetNft } from "../../lib/mintTestnetNft";
 import { stake, unstake } from "../../lib/stake";
-import StakeButton from "./StakeButton";
-import StakedButton from "./StakedButton";
-import UnstakeButton from "./UnstakeButton";
 
 const TokenRow = ({
   style,
@@ -87,7 +84,7 @@ const TokenRow = ({
   }
 
   return (
-    <Box>
+    <Box style={style}>
       <Box
         style={{
           position: "relative",
