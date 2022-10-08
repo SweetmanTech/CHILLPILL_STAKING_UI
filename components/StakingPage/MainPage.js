@@ -122,9 +122,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
       <StakeAllButton
         stakingContract={stakingContract}
         nftContract={nftContract}
-        staked={false}
         tokensToStake={tokens}
-        image={getIpfsLink(tokens?.[0]?.token?.image?.url)}
         onSuccess={() => {
           load(signer);
           setPendingTxStep(0);
