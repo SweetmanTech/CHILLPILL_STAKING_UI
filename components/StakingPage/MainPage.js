@@ -158,7 +158,9 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         }}
       >
         <ClaimButton
-          style={{}}
+          style={{
+            maxWidth: "500px",
+          }}
           stakingContract={stakingContract}
           stakedTokenIds={stakedTokens}
           setPendingTxStep={setPendingTxStep}
