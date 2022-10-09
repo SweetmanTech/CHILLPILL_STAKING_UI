@@ -12,8 +12,7 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
       "http://nftstorage.link/ipfs/bafkreifzhqyi2yzeg3vfb3h5v4pqr25hhynqfarndseqhqwlxfarliinwa";
 
     try {
-      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-      const wasAdded = await ethereum.request({
+      await ethereum.request({
         method: "wallet_watchAsset",
         params: {
           type: "ERC20", // Initially only supports ERC20, but eventually more!
