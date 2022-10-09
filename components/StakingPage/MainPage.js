@@ -5,7 +5,7 @@ import {
   getDCNT721A,
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
 import { getZdkTokens } from "../../lib/zdk";
@@ -20,6 +20,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
   const { chain: activeChain } = useNetwork();
+  const isMobile = useMediaQuery("(max-width:600px)");
   const chainId = process.env.NEXT_PUBLIC_CHAIN_ID;
   const address = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS;
   const chain = allChains.find((chain) => chain.id == chainId);
@@ -64,6 +65,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const getUnclaimedChill = async (staking = stakingContract, tokens) => {
+    if (!staking) return;
     const unclaimedTokens = await staking.earningInfo(account, tokens);
     const formattedChill =
       Math.round(ethers.utils.formatEther(unclaimedTokens.toString()) * 1000) /
@@ -109,13 +111,22 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
     load(getSignerOrProvider());
   }, [address, chain, chainId, signer]);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await getUnclaimedChill(stakingContract, stakedTokens);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <SocialRow />
-      <SteakChatSvg
-        amountOfChill={unclaimedChill}
-        style={{ position: "relative", zIndex: 0, width: "75vw" }}
-      />
+      <Box style={{ display: "flex", justifyContent: "center" }}>
+        <SteakChatSvg
+          amountOfChill={unclaimedChill}
+          style={{ width: isMobile ? "90vw" : "50vw" }}
+        />
+      </Box>
 
       <StakingData
         minimumLockedValue={
