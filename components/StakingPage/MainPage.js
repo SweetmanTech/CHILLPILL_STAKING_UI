@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
 import StakeAllButton from "../SVG/StakeAllButton";
 import ClaimButton from "../SVG/ClaimButton";
+import SocialRow from "../SocialRow";
 
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const { data: signer } = useSigner();
@@ -110,6 +111,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <SocialRow />
       <SteakChatSvg
         amountOfChill={unclaimedChill}
         style={{ position: "relative", zIndex: 0, width: "75vw" }}
