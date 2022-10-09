@@ -1,8 +1,41 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
-const SteakChatSvg = ({ amountOfChill = "", style }) => {
+const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
   const { address } = useAccount();
+
+  const addChillToWallet = async () => {
+    console.log("addChillToWallet");
+    const tokenAddress = chillTokenAddres;
+    const tokenSymbol = "CHILL";
+    const tokenDecimals = 18;
+    const tokenImage =
+      "http://nftstorage.link/ipfs/bafkreifzhqyi2yzeg3vfb3h5v4pqr25hhynqfarndseqhqwlxfarliinwa";
+
+    try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+      const wasAdded = await ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
+          options: {
+            address: tokenAddress, // The address that the token is at.
+            symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+            decimals: tokenDecimals, // The number of decimals in the token
+            image: tokenImage, // A string url of the token logo
+          },
+        },
+      });
+
+      if (wasAdded) {
+        console.log("Thanks for your interest!");
+      } else {
+        console.log("Your loss!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <svg
@@ -312,6 +345,7 @@ const SteakChatSvg = ({ amountOfChill = "", style }) => {
             fontFamily: "MoreSugarThin, 'More Sugar'",
           }}
           transform="translate(1008.9 862.85)"
+          onClick={addChillToWallet}
         >
           <tspan x="0" y="0">
             $CHILL

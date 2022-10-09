@@ -125,6 +125,7 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         <SteakChatSvg
           amountOfChill={unclaimedChill}
           style={{ width: isMobile ? "90vw" : "50vw" }}
+          chillTokenAddres={erc20ContractAddress}
         />
       </Box>
 
