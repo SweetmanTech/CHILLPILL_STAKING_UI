@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["nftstorage.link", "ipfs.io"],
+    domains: ["nftstorage.link", "ipfs.io", "chillrx.mypinata.cloud"],
   },
 };
 
