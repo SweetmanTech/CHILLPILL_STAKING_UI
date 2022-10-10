@@ -243,12 +243,12 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
         <text style={{ fontFamily: "MoreSugarThin, 'More Sugar'" }}>
           <tspan style={{ fontSize: "56.57px" }}>
             <tspan x="299.95" y="417.74">
-              LOOK AT HOW MUCH $CHILL{" "}
+              STAKE YOUR PILLS BELOW{" "}
             </tspan>
           </tspan>
           <tspan style={{ fontSize: "56.57px" }}>
             <tspan x="381.5" y="485.63">
-              YOUR&apos;E EARNING DAILY!{" "}
+              TO EARN $CHILL!{" "}
             </tspan>
           </tspan>
           <tspan style={{ fontSize: "29.09px" }}>
