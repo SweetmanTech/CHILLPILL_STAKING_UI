@@ -4,7 +4,7 @@ const WhatIsChill = ({ style }) => {
   const [hovering, setHovering] = useState(false);
 
   return (
-    <a href="https://sweetman-eth.gitbook.io/chill/" target="__blank">
+    <a href="https://coin.chillrx.io/" target="__blank">
       <svg
         id="Layer_1"
         style={style}
