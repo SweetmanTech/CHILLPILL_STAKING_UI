@@ -12,8 +12,6 @@ import { getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
-import StakeAllButton from "../SVG/StakeAllButton";
-import ClaimButton from "../SVG/ClaimButton";
 import SocialRow from "../SocialRow";
 
 const MainPage = ({ openSeaData, setPendingTxStep }) => {
@@ -120,7 +118,15 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <SocialRow />
+      <SocialRow
+        stakingContract={stakingContract}
+        stakedTokens={stakedTokens}
+        setPendingTxStep={setPendingTxStep}
+        unclaimedChill={unclaimedChill}
+        nftContract={nftContract}
+        unstakedTokens={unstakedTokens}
+        load={load}
+      />
       <Box style={{ display: "flex", justifyContent: "center" }}>
         <SteakChatSvg
           amountOfChill={unclaimedChill}
@@ -150,59 +156,37 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         }}
       />
 
-      <Box
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-        }}
-      >
-        <ClaimButton
-          style={{
-            maxWidth: "500px",
-          }}
-          stakingContract={stakingContract}
-          stakedTokenIds={stakedTokens}
-          setPendingTxStep={setPendingTxStep}
-          onSuccess={() => {
-            load(signer);
-            setPendingTxStep(0);
-          }}
-          unclaimedChill={unclaimedChill}
-        />
-
-        <StakeAllButton
-          stakingContract={stakingContract}
-          nftContract={nftContract}
-          tokensToStake={unstakedTokens}
-          onSuccess={() => {
-            load(signer);
-            setPendingTxStep(0);
-          }}
-          style={{}}
-          setPendingTxStep={setPendingTxStep}
-        />
-      </Box>
-
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
         const imageUrl = getIpfsLink(token.token.image.url);
         const isStaked = stakedTokens.includes(parseInt(myTokenId));
         return (
-          <TokenRow
-            stakingContract={stakingContract}
-            nftContract={nftContract}
-            staked={isStaked}
+          <Box
             key={myTokenId}
-            tokenId={myTokenId}
-            image={imageUrl}
-            onSuccess={() => {
-              load(signer);
-              setPendingTxStep(0);
-            }}
-            style={{}}
-            setPendingTxStep={setPendingTxStep}
-          />
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <TokenRow
+              stakingContract={stakingContract}
+              nftContract={nftContract}
+              staked={isStaked}
+              tokenId={myTokenId}
+              image={imageUrl}
+              onSuccess={() => {
+                load(signer);
+                setPendingTxStep(0);
+              }}
+              style={
+                isMobile
+                  ? {}
+                  : {
+                      width: "50vw",
+                      border: "1px solid red",
+                      margingTop: "-100px",
+                    }
+              }
+              setPendingTxStep={setPendingTxStep}
+            />
+          </Box>
         );
       })}
     </Box>
