@@ -3,6 +3,7 @@
   background-image: url('/brick-wall.png');
   width: '100%';
   height: '100%';
+  background-size: 100vw;
   background-repeat: repeat;
 }
 
