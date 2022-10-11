@@ -84,14 +84,14 @@ const TokenRow = ({
   }
 
   return (
-    <Box style={style}>
+    <Box mt={isMobile ? -5 : -10}>
       <Box
         style={{
           position: "relative",
-          top: isMobile ? 62 : 110,
+          top: isMobile ? 62 : 150,
           left: isMobile ? 20 : 40,
-          height: isMobile ? "50px" : "100px",
-          width: isMobile ? "50px" : "100px",
+          height: isMobile ? "50px" : "130px",
+          width: isMobile ? "50px" : "130px",
         }}
       >
         <Image src={image} layout="fill" objectFit="cover" alt="chillrx" />
@@ -99,6 +99,7 @@ const TokenRow = ({
 
       <svg
         id="Layer_1"
+        style={style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1946.14 512.28"
       >

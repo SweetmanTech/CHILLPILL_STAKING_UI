@@ -175,15 +175,9 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
                 load(signer);
                 setPendingTxStep(0);
               }}
-              style={
-                isMobile
-                  ? {}
-                  : {
-                      width: "50vw",
-                      border: "1px solid red",
-                      margingTop: "-100px",
-                    }
-              }
+              style={{
+                width: isMobile ? "75vw" : "50vw",
+              }}
               setPendingTxStep={setPendingTxStep}
             />
           </Box>
