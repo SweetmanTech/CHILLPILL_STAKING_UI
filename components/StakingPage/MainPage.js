@@ -8,7 +8,7 @@ import {
 import { Box, useMediaQuery } from "@mui/material";
 import SteakChatSvg from "../SVG/SteakChatSvg";
 import TokenRow from "../SVG/TokenRow";
-import { getZdkTokens } from "../../lib/zdk";
+import { getStakedZdkTokens, getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
 import StakingData from "../SVG/StakingData";
@@ -73,11 +73,15 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const load = async (signerOrProvider) => {
-    const zdkTokens = await getZdkTokens(account);
-    setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
+      const zdkTokens = await getZdkTokens(account);
       const stakedPills = await getStakedPills(contracts.staking);
+      let stakedZdkTokens = [];
+      if (stakedPills.length > 0) {
+        stakedZdkTokens = await getStakedZdkTokens(stakedPills);
+      }
+      setTokens([...zdkTokens, ...stakedZdkTokens]);
       const stakeable = zdkTokens.filter(
         (pill) => stakedPills.indexOf(parseInt(pill.token.tokenId)) < 0
       );
