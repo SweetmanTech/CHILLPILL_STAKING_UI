@@ -54,8 +54,11 @@ const SocialRow = ({
         }}
         setPendingTxStep={setPendingTxStep}
       />
-      {!isMobile && <OpenSea style={{ height: isMobile ? "35px" : "75px" }} />}
       <Box style={{ display: "flex", gap: 30 }}>
+        <OpenSea
+          height={isMobile ? "25px" : "50px"}
+          width={isMobile ? "50px" : "100px"}
+        />
         <Twitter style={{ width: isMobile ? "25px" : "50px" }} />
         <Discord style={{ width: isMobile ? "25px" : "50px" }} />
         <WhatIsChill style={{ height: isMobile ? "25px" : "50px" }} />
