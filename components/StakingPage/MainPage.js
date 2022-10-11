@@ -73,7 +73,10 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   };
 
   const load = async (signerOrProvider) => {
-    const zdkTokens = await getZdkTokens(account);
+    const zdkTokens = await getZdkTokens(
+      "0xa061fbfa7dc7ee9f838a717e8b55fbc34641bf6e"
+    );
+    console.log("zdktokens", zdkTokens);
     setTokens(zdkTokens);
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
