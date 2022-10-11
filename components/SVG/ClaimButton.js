@@ -23,8 +23,6 @@ const ClaimButton = ({
     );
   };
 
-  console.log("unclaimedChill", unclaimedChill);
-
   return (
     <>
       {unclaimedChill > 0 && (

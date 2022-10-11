@@ -51,8 +51,6 @@ const StakeAllButton = ({
     setPendingTxStep(0);
   };
 
-  console.log("tokensToStake", tokensToStake);
-
   return (
     <>
       {tokensToStake.length > 0 && (
