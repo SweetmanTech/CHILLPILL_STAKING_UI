@@ -47,7 +47,7 @@ const Home = ({ totalStakedPills, floorPrice }) => {
         percentPillsStaked={
           totalStakedPills
             ? Math.round((totalStakedPills / 9999) * 10000) / 100
-            : ".."
+            : "..."
         }
         style={{
           width: "100vw",
