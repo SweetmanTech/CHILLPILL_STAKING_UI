@@ -10,7 +10,7 @@ import getStakingContracts from "../lib/getStakingContract";
 import getDefaultProvider from "../lib/getDefaultProvider";
 import getTotalStakedPills from "../lib/getTotalStakedPills";
 
-const Home = ({ openSeaData, totalStakedPills, floorPrice }) => {
+const Home = ({ totalStakedPills, floorPrice }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const { address } = useAccount();
   return (
@@ -21,7 +21,7 @@ const Home = ({ openSeaData, totalStakedPills, floorPrice }) => {
 
       <main className={styles.main}>
         {address ? (
-          <StakingPage openSeaData={openSeaData} />
+          <StakingPage />
         ) : (
           <LoginSpeechBubble
             style={{ width: isMobile ? "100vw" : "50vw", height: "50vh" }}
@@ -60,9 +60,8 @@ export async function getServerSideProps(context) {
   const provider = getDefaultProvider(chainId);
   const readOnlyContracts = await getStakingContracts(provider);
   const totalStakedPills = await getTotalStakedPills(readOnlyContracts.staking);
-  console.log("floorPrice", floorPrice);
   return {
-    props: { openSeaData, totalStakedPills, floorPrice }, // will be passed to the page component as props
+    props: { totalStakedPills, floorPrice }, // will be passed to the page component as props
   };
 }
 
