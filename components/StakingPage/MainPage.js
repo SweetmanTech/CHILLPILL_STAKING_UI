@@ -11,10 +11,8 @@ import TokenRow from "../SVG/TokenRow";
 import { getStakedZdkTokens, getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { ethers } from "ethers";
-import StakingData from "../SVG/StakingData";
-import SocialRow from "../SocialRow";
 
-const MainPage = ({ openSeaData, setPendingTxStep }) => {
+const MainPage = ({ setPendingTxStep }) => {
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
   const { chain: activeChain } = useNetwork();
@@ -23,28 +21,17 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
   const address = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS;
   const chain = allChains.find((chain) => chain.id == chainId);
   const [stakingContract, setStakingContract] = useState();
-  const [nftContractAddress, setNftContractAddress] = useState();
   const [nftContract, setNftContract] = useState();
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
-  const [totalStakedPills, setTotalStakedPills] = useState(0);
-  const [floorPrice, setFloorPrice] = useState(0);
   const [tokens, setTokens] = useState([]);
-  const [unstakedTokens, setUnstakedTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
-
-  const getTotalStakedPills = async (staking = stakingContract) => {
-    const stakedBalance = await staking.totalStaked();
-    setTotalStakedPills(stakedBalance.toNumber());
-    return stakedBalance.toNumber();
-  };
 
   const getStakingContract = async (signerOrProvider) => {
     const sdk = await setupDCNTSDK(chain?.id || 1, signerOrProvider);
     const staking = await getDCNTStaking(sdk, address);
     setStakingContract(staking);
     const nftAddress = await staking.nftAddress();
-    setNftContractAddress(nftAddress);
     const erc20Address = await staking.erc20Address();
     setErc20ContractAddress(erc20Address);
     const stakingNftContract = await getDCNT721A(sdk, nftAddress);
@@ -82,18 +69,8 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
         stakedZdkTokens = await getStakedZdkTokens(stakedPills);
       }
       setTokens([...zdkTokens, ...stakedZdkTokens]);
-      const stakeable = zdkTokens.filter(
-        (pill) => stakedPills.indexOf(parseInt(pill.token.tokenId)) < 0
-      );
-      setUnstakedTokens(stakeable);
       await getUnclaimedChill(contracts.staking, stakedPills);
     }
-    await getTotalStakedPills(contracts.staking);
-    getFloorPrice();
-  };
-
-  const getFloorPrice = () => {
-    setFloorPrice(openSeaData.collection.stats.floor_price);
   };
 
   const getSignerOrProvider = () => {
@@ -122,15 +99,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <SocialRow
-        stakingContract={stakingContract}
-        stakedTokens={stakedTokens}
-        setPendingTxStep={setPendingTxStep}
-        unclaimedChill={unclaimedChill}
-        nftContract={nftContract}
-        unstakedTokens={unstakedTokens}
-        load={load}
-      />
       <Box style={{ display: "flex", justifyContent: "center" }}>
         <SteakChatSvg
           amountOfChill={unclaimedChill}
@@ -138,27 +106,6 @@ const MainPage = ({ openSeaData, setPendingTxStep }) => {
           chillTokenAddres={erc20ContractAddress}
         />
       </Box>
-
-      <StakingData
-        minimumLockedValue={
-          totalStakedPills
-            ? Math.round(floorPrice * totalStakedPills * 100) / 100
-            : "..."
-        }
-        totalChillRxStaked={totalStakedPills || "..."}
-        percentPillsStaked={
-          totalStakedPills
-            ? Math.round((totalStakedPills / 9999) * 10000) / 100
-            : "..."
-        }
-        style={{
-          width: "100vw",
-          position: "fixed",
-          top: "0px",
-          right: "0px",
-          zIndex: 1000,
-        }}
-      />
 
       {tokens.map((token) => {
         const myTokenId = token.token.tokenId;
