@@ -6,7 +6,7 @@ import {
   setupDCNTSDK,
 } from "@decent.xyz/decent-sdk-private-v0";
 import { Box, useMediaQuery } from "@mui/material";
-import SteakChatSvg from "../SVG/SteakChatSvg";
+import SteakChatSvg from "../SVG/SteakChat";
 import TokenRow from "../SVG/TokenRow";
 import { getStakedZdkTokens, getZdkTokens } from "../../lib/zdk";
 import getIpfsLink from "../../lib/getIpfsLink";
