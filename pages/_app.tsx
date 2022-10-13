@@ -32,7 +32,7 @@ const wagmiClient = createClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider coolMode chains={chains} theme={midnightTheme({overlayBlur: 'small'})}>
+      <RainbowKitProvider modalSize="compact" coolMode chains={chains} theme={midnightTheme({overlayBlur: 'small'})}>
         <Component {...pageProps} />
         <ToastContainer />
       </RainbowKitProvider>
