@@ -1,11 +1,31 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import { toast } from "react-toastify";
+import {
+  allChains,
+  useAccount,
+  useNetwork,
+  useSigner,
+  useSwitchNetwork,
+} from "wagmi";
+import { stakeAll } from "../../lib/stake";
 
-const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
-  const { address } = useAccount();
+const SteakChat = ({
+  amountOfChill = "",
+  style,
+  chillTokenAddres,
+  setPendingTxStep,
+  tokensToStake,
+  stakingContract,
+  nftContract,
+  onSuccess,
+}) => {
+  const { address: account } = useAccount();
+  const { data: signer } = useSigner();
+  const { switchNetwork } = useSwitchNetwork();
+  const { chain } = useNetwork();
   const [stakeAllHovering, setStakeAllHovering] = useState(false);
-  const [claimHovering, setClaimHovering] = useState(false);
+  const [hovering, setHovering] = useState(false);
 
   const addChillToWallet = async () => {
     const tokenAddress = chillTokenAddres;
@@ -30,6 +50,34 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSteakAllClick = async () => {
+    if (!signer) {
+      toast.error("please connect wallet");
+      return;
+    }
+    if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
+      await switchNetwork(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
+      const myChain = allChains.find(
+        (blockchain) => blockchain.id == process.env.NEXT_PUBLIC_CHAIN_ID
+      );
+      toast.error(`Please connect to ${myChain.name} and try again`);
+      return;
+    }
+    setPendingTxStep(1);
+
+    const tokenIds = tokensToStake.map((token) => token.token.tokenId);
+    await stakeAll(
+      stakingContract,
+      nftContract,
+      tokenIds,
+      account,
+      onSuccess,
+      setPendingTxStep
+    );
+
+    setPendingTxStep(0);
   };
 
   return (
@@ -221,18 +269,18 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
           {amountOfChill} $CHILL
         </tspan>
       </text>
-      <g
-        onMouseEnter={() => setClaimHovering(true)}
-        onMouseLeave={() => setClaimHovering(false)}
-        onClick={() => alert("CHILL")}
-      >
-        <g>
+      <g>
+        <g
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+          onClick={() => alert("PLZ WORK")}
+        >
           <path
             style={{ fill: "#040402" }}
             d="M1029.33,934.96c.08-1.32,.18-2.46,.21-3.6,.04-1.1,.5-1.39,2.1-1.41,8.6-.11,17.17,.5,25.75,.61,8.76,.12,17.52,.04,26.28,.02,5.13-.01,10.27-.11,15.4-.11,16.18-.01,32.36-.01,48.55,.02,5.02,0,10.04,.13,15.06,.22,10.16,.19,20.3-.18,30.45-.43,12.5-.31,24.99-.16,37.48,.32,.82,.03,1.66,0,2.48-.07,.76-.07,1.18,.13,1.35,.61,.07,.18,.08,.38,.09,.57,.41,9.35,.95,18.69,1.17,28.04,.11,4.84-.32,9.69-.54,14.53-.09,2.1-.26,4.19-.39,6.29-.37,5.87-.72,11.74-1.13,17.62-.08,1.09-.41,2.17-.68,3.25-.15,.58-.8,.76-1.6,.81-2.28,.13-4.55,.28-6.98,.43-.05,.25-.16,.53-.16,.82,.01,.95,.09,1.91,.1,2.86,.01,1.36-.74,1.9-2.68,1.9-2.51,0-5.02-.04-7.53-.03-15.68,.03-31.36,.01-47.03,.13-14.4,.11-28.79-.03-43.18-.39-7.25-.18-14.5-.31-21.75-.48-9.26-.22-18.51-.54-27.77-.65-7.53-.09-15.06,.07-22.59,.08-4.52,0-9.04-.04-13.55-.13-5.63-.11-11.26-.29-16.89-.46-2.22-.07-2.89-.49-2.93-2.02-.03-1.48,.17-2.96,.2-4.44,.17-7.48,.29-14.96,.47-22.44,.21-9.01,.45-18.01,.68-27.02,.03-1.03,.21-2.06,.17-3.09-.09-2.63-.26-5.26-.39-7.89-.04-.92-.12-1.83-.05-2.75,.11-1.51,.44-1.71,2.61-1.73,1.78-.01,3.57,0,5.36,.01,.55,0,1.1,0,1.86,0h0Zm201.42,65.92c.16-.89,.24-1.56,.4-2.23,.08-.36,.4-.69,.43-1.05,.27-4.16,.48-8.31,.74-12.47,.44-6.94,1.07-13.88,1.3-20.82,.17-5.19-.1-10.38-.29-15.57-.17-4.58-.5-9.15-.77-13.73-.06-.94-.16-1.89-.25-2.89-.4-.02-.72-.05-1.04-.06-3.9-.11-7.81-.21-11.71-.33-11.61-.38-23.21-.05-34.81,.18-6.8,.13-13.61,.26-20.41,.25-7.03-.01-14.06-.29-21.09-.29-19.09,0-38.17,.05-57.26,.15-15.01,.08-30.02,.18-45.01-.57-3.04-.15-6.1-.02-9.32-.02-.2,3.23-.41,6.39-.57,9.54-.11,2.17-.13,4.35-.23,6.53-.23,4.88-.5,9.77-.74,14.65-.1,1.98-.1,3.97-.27,5.95-.43,5-.68,9.99-.2,14.99,.46,4.76,.78,9.52,1.17,14.29,.06,.68,.19,1.35,.3,2.08,.53,.04,.96,.09,1.39,.09,10.66,.11,21.31,.22,31.97,.33,21.76,.24,43.52,.44,65.28,.75,12.33,.17,24.65,.63,36.98,.76,13.78,.14,27.57,.06,41.35,.04,5.19,0,10.38-.11,15.57-.21,2.39-.05,4.77-.22,7.11-.34h0Z"
           />
           <path
-            style={{ fill: claimHovering ? "#FD0101" : "#00a6c6" }}
+            style={{ fill: hovering ? "#FD0101" : "#00a6c6" }}
             d="M1230.75,1000.88c-2.34,.12-4.72,.29-7.11,.34-5.19,.11-10.38,.2-15.57,.21-13.78,.02-27.57,.1-41.35-.04-12.33-.12-24.65-.58-36.98-.76-21.76-.31-43.52-.51-65.28-.75-10.66-.12-21.31-.22-31.97-.33-.43,0-.86-.05-1.39-.09-.11-.72-.24-1.4-.3-2.08-.4-4.76-.71-9.53-1.17-14.29-.48-5-.23-10,.2-14.99,.17-1.98,.17-3.97,.27-5.95,.24-4.88,.51-9.77,.74-14.65,.1-2.17,.12-4.35,.23-6.53,.16-3.16,.38-6.32,.57-9.54,3.22,0,6.28-.13,9.32,.02,14.99,.75,30,.64,45.01,.57,19.08-.1,38.17-.15,57.26-.15,7.03,0,14.06,.28,21.09,.29,6.8,.01,13.61-.12,20.41-.25,11.6-.22,23.2-.55,34.81-.18,3.9,.13,7.81,.22,11.71,.33,.33,0,.65,.04,1.04,.06,.09,1,.2,1.94,.25,2.89,.27,4.58,.6,9.15,.77,13.73,.19,5.19,.47,10.39,.29,15.57-.23,6.94-.86,13.88-1.3,20.82-.26,4.16-.47,8.31-.74,12.47-.02,.35-.34,.69-.43,1.05-.16,.66-.24,1.33-.4,2.23h0Z"
           />
         </g>
@@ -328,7 +376,7 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
       <g
         onMouseEnter={() => setStakeAllHovering(true)}
         onMouseLeave={() => setStakeAllHovering(false)}
-        onClick={() => alert("CHILL")}
+        onClick={handleSteakAllClick}
       >
         <g>
           <path
@@ -373,4 +421,4 @@ const SteakChatSvg = ({ amountOfChill = "", style, chillTokenAddres }) => {
   );
 };
 
-export default SteakChatSvg;
+export default SteakChat;

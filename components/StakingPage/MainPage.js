@@ -25,6 +25,7 @@ const MainPage = ({ setPendingTxStep }) => {
   const [erc20ContractAddress, setErc20ContractAddress] = useState();
   const [tokens, setTokens] = useState([]);
   const [stakedTokens, setStakedTokens] = useState([]);
+  const [unstakedTokens, setUnstakedTokens] = useState([]);
   const [unclaimedChill, setUnclaimedChill] = useState("...");
 
   const getStakingContract = async (signerOrProvider) => {
@@ -63,6 +64,7 @@ const MainPage = ({ setPendingTxStep }) => {
     const contracts = await getStakingContract(signerOrProvider);
     if (account) {
       const zdkTokens = await getZdkTokens(account);
+      setUnstakedTokens(zdkTokens);
       const stakedPills = await getStakedPills(contracts.staking);
       let stakedZdkTokens = [];
       if (stakedPills.length > 0) {
@@ -104,36 +106,45 @@ const MainPage = ({ setPendingTxStep }) => {
           amountOfChill={unclaimedChill}
           style={{ width: isMobile ? "90vw" : "50vw" }}
           chillTokenAddres={erc20ContractAddress}
+          setPendingTxStep={setPendingTxStep}
+          tokensToStake={unstakedTokens}
+          stakingContract={stakingContract}
+          nftContract={nftContract}
+          onSuccess={() => {
+            load(signer);
+            setPendingTxStep(0);
+          }}
         />
       </Box>
 
-      {tokens.map((token) => {
-        const myTokenId = token.token.tokenId;
-        const imageUrl = getIpfsLink(token.token.image.url);
-        const isStaked = stakedTokens.includes(parseInt(myTokenId));
-        return (
-          <Box
-            key={myTokenId}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <TokenRow
-              stakingContract={stakingContract}
-              nftContract={nftContract}
-              staked={isStaked}
-              tokenId={myTokenId}
-              image={imageUrl}
-              onSuccess={() => {
-                load(signer);
-                setPendingTxStep(0);
-              }}
-              style={{
-                width: isMobile ? "75vw" : "50vw",
-              }}
-              setPendingTxStep={setPendingTxStep}
-            />
-          </Box>
-        );
-      })}
+      {tokens.length > 0 &&
+        tokens.map((token) => {
+          const myTokenId = token.token.tokenId;
+          const imageUrl = getIpfsLink(token.token.image.url);
+          const isStaked = stakedTokens.includes(parseInt(myTokenId));
+          return (
+            <Box
+              key={myTokenId}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <TokenRow
+                stakingContract={stakingContract}
+                nftContract={nftContract}
+                staked={isStaked}
+                tokenId={myTokenId}
+                image={imageUrl}
+                onSuccess={() => {
+                  load(signer);
+                  setPendingTxStep(0);
+                }}
+                style={{
+                  width: isMobile ? "75vw" : "50vw",
+                }}
+                setPendingTxStep={setPendingTxStep}
+              />
+            </Box>
+          );
+        })}
     </Box>
   );
 };
