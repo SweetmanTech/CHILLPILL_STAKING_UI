@@ -17,15 +17,24 @@ const Home = ({ totalStakedPills, floorPrice }) => {
     <Box sx={{ backgroundColor: "#111827" }} className={styles.container}>
       <Head />
 
-      <SocialRow />
+      <SocialRow
+        style={{
+          paddingTop: "2.5%",
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95vw",
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          zIndex: 1000,
+        }}
+      />
 
       <main className={styles.main}>
         {address ? (
           <StakingPage />
         ) : (
-          <LoginSpeechBubble
-            style={{ width: isMobile ? "100vw" : "50vw", height: "50vh" }}
-          />
+          <LoginSpeechBubble style={{ width: isMobile ? "100vw" : "50vw" }} />
         )}
       </main>
       <StakingData

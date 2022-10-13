@@ -4,19 +4,9 @@ import Twitter from "../SVG/Twitter";
 import { useSigner } from "wagmi";
 import ChillRxLogo from "../SVG/ChillRxLogo";
 
-const SocialRow = ({}) => {
-  const isMobile = useMediaQuery("(max-width:600px)");
-
+const SocialRow = ({ style }) => {
   return (
-    <Box
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "90vw",
-        flexWrap: "wrap",
-      }}
-    >
+    <Box style={style}>
       <ChillRxLogo style={{ width: "100px" }} />
     </Box>
   );
