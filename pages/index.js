@@ -22,6 +22,7 @@ const Home = ({ totalStakedPills, floorPrice }) => {
           paddingTop: "2.5%",
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           width: "95vw",
           position: "fixed",
           top: "0px",
