@@ -6,6 +6,8 @@ import { allChains, chain, configureChains, createClient, WagmiConfig } from 'wa
 import { publicProvider } from 'wagmi/providers/public';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider } from '@mui/material';
+import theme from "../lib/theme"
 
 const envChain = allChains.find((c) => c.id == Number(process.env.NEXT_PUBLIC_CHAIN_ID))
 const { chains, provider, webSocketProvider } = configureChains(
@@ -33,7 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider modalSize="compact" coolMode chains={chains} theme={midnightTheme({overlayBlur: 'small'})}>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
         <ToastContainer />
       </RainbowKitProvider>
     </WagmiConfig>
