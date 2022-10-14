@@ -27,6 +27,7 @@ const Home = ({ totalStakedPills, floorPrice }) => {
           position: "fixed",
           top: "0px",
           right: "0px",
+          paddingRight: "5%",
           zIndex: 1000,
         }}
       />
