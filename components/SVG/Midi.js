@@ -1,8 +1,9 @@
-const Midi = ({ style }) => {
+const Midi = ({ style, onClickFx }) => {
   return (
     <svg
       id="Layer_1"
       style={style}
+      onClick={onClickFx}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1865.74 1421.97"
     >
