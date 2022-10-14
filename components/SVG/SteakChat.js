@@ -1,4 +1,3 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
