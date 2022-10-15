@@ -6,8 +6,9 @@ import Spotify from "../SVG/Spotify";
 import YouTube from "../SVG/YouTube";
 import OpenSea from "../SVG/OpenSea";
 import WWOCP from "../SVG/WWOCP";
+import CloseButton from "../SVG/CloseButton";
 
-const SocialRow = () => {
+const SocialRow = ({ closeDrawer }) => {
   return (
     <Box style={{ display: "flex", gap: 20, alignItems: "center" }}>
       <Twitter style={{ width: "40px" }} />
@@ -17,6 +18,7 @@ const SocialRow = () => {
       <YouTube style={{ width: "40px" }} />
       <OpenSea style={{ width: "40px" }} />
       <WWOCP style={{ width: "40px" }} />
+      <CloseButton style={{ width: "40px" }} closeDrawer={closeDrawer} />
     </Box>
   );
 };

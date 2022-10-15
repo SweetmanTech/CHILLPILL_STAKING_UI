@@ -10,7 +10,7 @@ const Drawer = ({ open, setOpen }) => {
       m={4}
       PaperProps={{ style: { borderRadius: "25px", padding: "10px" } }}
     >
-      <SocialRow />
+      <SocialRow closeDrawer={() => setOpen(false)} />
       <Typography variant="h4">Earn $CHILL</Typography>
     </MuiDrawer>
   );
