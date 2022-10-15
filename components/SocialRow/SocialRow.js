@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Twitter from "components/SVG/Twitter";
 import Discord from "components/SVG/Discord";
 import Instagram from "../SVG/Instagram";
@@ -9,24 +9,27 @@ import WWOCP from "../SVG/WWOCP";
 import CloseButton from "../SVG/CloseButton";
 
 const SocialRow = ({ closeDrawer }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const ICON_WIDTH = isMobile ? "20px" : "40px";
   return (
     <Box
       style={{
         display: "flex",
-        gap: 20,
+        gap: isMobile ? 10 : 20,
         alignItems: "center",
         justifyContent: "flex-end",
       }}
     >
-      <Twitter style={{ width: "40px" }} />
-      <Discord style={{ width: "40px" }} />
-      <Instagram style={{ width: "40px" }} />
-      <Spotify style={{ width: "40px" }} />
-      <YouTube style={{ width: "40px" }} />
-      <OpenSea style={{ width: "40px" }} />
-      <WWOCP style={{ width: "40px" }} />
+      <Twitter style={{ width: ICON_WIDTH }} />
+      <Discord style={{ width: ICON_WIDTH }} />
+      <Instagram style={{ width: ICON_WIDTH }} />
+      <Spotify style={{ width: ICON_WIDTH }} />
+      <YouTube style={{ width: ICON_WIDTH }} />
+      <OpenSea style={{ width: ICON_WIDTH }} />
+      <WWOCP style={{ width: ICON_WIDTH }} />
       <CloseButton
-        style={{ width: "40px", marginTop: "10px" }}
+        style={{ width: ICON_WIDTH, marginTop: "10px" }}
         closeDrawer={closeDrawer}
       />
     </Box>
