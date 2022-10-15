@@ -10,7 +10,14 @@ import CloseButton from "../SVG/CloseButton";
 
 const SocialRow = ({ closeDrawer }) => {
   return (
-    <Box style={{ display: "flex", gap: 20, alignItems: "center" }}>
+    <Box
+      style={{
+        display: "flex",
+        gap: 20,
+        alignItems: "center",
+        justifyContent: "flex-end",
+      }}
+    >
       <Twitter style={{ width: "40px" }} />
       <Discord style={{ width: "40px" }} />
       <Instagram style={{ width: "40px" }} />
@@ -18,7 +25,10 @@ const SocialRow = ({ closeDrawer }) => {
       <YouTube style={{ width: "40px" }} />
       <OpenSea style={{ width: "40px" }} />
       <WWOCP style={{ width: "40px" }} />
-      <CloseButton style={{ width: "40px" }} closeDrawer={closeDrawer} />
+      <CloseButton
+        style={{ width: "40px", marginTop: "10px" }}
+        closeDrawer={closeDrawer}
+      />
     </Box>
   );
 };

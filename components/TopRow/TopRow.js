@@ -18,13 +18,16 @@ const TopRow = ({ style }) => {
   return (
     <Box style={style}>
       <ChillRxLogo style={{ width: "100px" }} />
-      {account && (
-        <WalletAddressBox
-          address={getTruncatedWallet(account)}
-          style={{ width: "200px" }}
-        />
-      )}
-      <Midi onClickFx={handleMidiClick} style={{ width: "100px" }} />
+
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        {account && (
+          <WalletAddressBox
+            address={getTruncatedWallet(account)}
+            style={{ width: "200px" }}
+          />
+        )}
+        <Midi onClickFx={handleMidiClick} style={{ width: "100px" }} />
+      </Box>
       <Drawer open={open} setOpen={setOpen} />
     </Box>
   );
