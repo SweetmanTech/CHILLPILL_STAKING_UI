@@ -1,6 +1,7 @@
 import { Box, Drawer as MuiDrawer, Typography } from "@mui/material";
 import EarnChillSection from "../EarnChillSection";
 import JoinTheClubSection from "../JoinTheClubSection";
+import SpendChillSection from "../SpendChillSection";
 import SocialRow from "../SocialRow";
 
 const Drawer = ({ open, setOpen }) => {
@@ -16,7 +17,7 @@ const Drawer = ({ open, setOpen }) => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "flex-start",
             gap: 5,
             paddingBottom: "10%",
           }}
@@ -24,8 +25,8 @@ const Drawer = ({ open, setOpen }) => {
           <EarnChillSection />
           <JoinTheClubSection />
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-          <Typography variant="h4">Spend $CHILL</Typography>
+        <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 5 }}>
+          <SpendChillSection />
           <Typography variant="h4">Learn More</Typography>
         </Box>
       </Box>
