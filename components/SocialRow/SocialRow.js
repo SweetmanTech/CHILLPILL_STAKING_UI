@@ -1,31 +1,22 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
-import { useAccount } from "wagmi";
-import getTruncatedWallet from "../../lib/getTruncatedWallet";
-import Drawer from "../Drawer";
-import ChillRxLogo from "../SVG/ChillRxLogo";
-import Midi from "../SVG/Midi";
-import WalletAddressBox from "../SVG/WalletAddressBox";
+import Twitter from "components/SVG/Twitter";
+import Discord from "components/SVG/Discord";
+import Instagram from "../SVG/Instagram";
+import Spotify from "../SVG/Spotify";
+import YouTube from "../SVG/YouTube";
+import OpenSea from "../SVG/OpenSea";
+import WWOCP from "../SVG/WWOCP";
 
-const SocialRow = ({ style }) => {
-  const { address: account } = useAccount();
-  const [open, setOpen] = useState(false);
-
-  const handleMidiClick = () => {
-    setOpen(true);
-  };
-
+const SocialRow = () => {
   return (
-    <Box style={style}>
-      <ChillRxLogo style={{ width: "100px" }} />
-      {account && (
-        <WalletAddressBox
-          address={getTruncatedWallet(account)}
-          style={{ width: "200px" }}
-        />
-      )}
-      <Midi onClickFx={handleMidiClick} style={{ width: "100px" }} />
-      <Drawer open={open} setOpen={setOpen} />
+    <Box style={{ display: "flex", gap: 20, alignItems: "center" }}>
+      <Twitter style={{ width: "40px" }} />
+      <Discord style={{ width: "40px" }} />
+      <Instagram style={{ width: "40px" }} />
+      <Spotify style={{ width: "40px" }} />
+      <YouTube style={{ width: "40px" }} />
+      <OpenSea style={{ width: "40px" }} />
+      <WWOCP style={{ width: "40px" }} />
     </Box>
   );
 };
