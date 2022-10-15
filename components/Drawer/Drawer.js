@@ -3,6 +3,7 @@ import EarnChillSection from "../EarnChillSection";
 import JoinTheClubSection from "../JoinTheClubSection";
 import SpendChillSection from "../SpendChillSection";
 import SocialRow from "../SocialRow";
+import LearnMoreSection from "../LearnMoreSection";
 
 const Drawer = ({ open, setOpen }) => {
   return (
@@ -10,7 +11,9 @@ const Drawer = ({ open, setOpen }) => {
       open={open}
       anchor={"right"}
       onClose={() => setOpen(false)}
-      PaperProps={{ style: { borderRadius: "25px", padding: "30px" } }}
+      PaperProps={{
+        style: { borderRadius: "25px", paddingLeft: "3%", paddingRight: "3%" },
+      }}
     >
       <SocialRow closeDrawer={() => setOpen(false)} />
       <Box px={7}>
@@ -27,7 +30,7 @@ const Drawer = ({ open, setOpen }) => {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 5 }}>
           <SpendChillSection />
-          <Typography variant="h4">Learn More</Typography>
+          <LearnMoreSection />
         </Box>
       </Box>
     </MuiDrawer>
