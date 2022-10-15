@@ -4,12 +4,16 @@ const EarnChillSection = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Typography variant="h4">Earn $CHILL</Typography>
-      <Box>
-        <Typography variant="h6" color="red">
-          Stake Your Pills
-        </Typography>
-        <Typography variant="p">Earn $CHILL by staking your ChillRx</Typography>
-      </Box>
+      <a href="https://stake.chillrx.io/" target="__blank">
+        <Box>
+          <Typography variant="h6" color="red">
+            Stake Your Pills
+          </Typography>
+          <Typography variant="p">
+            Earn $CHILL by staking your ChillRx
+          </Typography>
+        </Box>
+      </a>
       <Box>
         <Typography variant="h6" color="#b8b8b8">
           Compete in the Song Games

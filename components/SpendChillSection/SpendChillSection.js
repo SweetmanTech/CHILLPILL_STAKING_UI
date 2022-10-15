@@ -5,10 +5,12 @@ const EarnChillSection = () => {
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Typography variant="h4">Spend $CHILL</Typography>
       <Box>
-        <Typography variant="h6" color="red">
+        <Typography variant="h6" color="#b8b8b8">
           Enter the Pharmacy
         </Typography>
-        <Typography variant="p">Spend $CHILL in our marketplace</Typography>
+        <Typography variant="p" color="#b8b8b8">
+          Spend $CHILL in our marketplace
+        </Typography>
       </Box>
       <Box>
         <Typography variant="h6" color="#b8b8b8">
