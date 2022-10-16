@@ -319,7 +319,7 @@ const SteakChat = ({
           TO EARN $CHILL
         </tspan>
       </text>
-      <g>
+      <g onClick={addChillToWallet}>
         <g>
           <path
             style={{ fill: "#070704" }}
