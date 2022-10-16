@@ -65,8 +65,6 @@ const SteakChat = ({
       toast.error(`Please connect to ${myChain.name} and try again`);
       return;
     }
-    setPendingTxStep(1);
-
     const tokenIds = tokensToStake.map((token) => token.token.tokenId);
     await stakeAll(
       stakingContract,

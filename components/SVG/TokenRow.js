@@ -42,10 +42,8 @@ const TokenRow = ({
       toast.error(`Please connect to ${myChain.name} and try again`);
       return;
     }
-    setPendingTxStep(1);
     if (staked) {
-      setPendingTxStep(4);
-      await unstake(stakingContract, tokenId, onSuccess);
+      await unstake(stakingContract, tokenId, onSuccess, setPendingTxStep);
     } else {
       const response = await stake(
         stakingContract,
