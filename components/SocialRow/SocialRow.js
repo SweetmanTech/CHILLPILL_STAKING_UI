@@ -1,65 +1,37 @@
 import { Box, useMediaQuery } from "@mui/material";
-import Discord from "../SVG/Discord";
+import Twitter from "components/SVG/Twitter";
+import Discord from "components/SVG/Discord";
+import Instagram from "../SVG/Instagram";
+import Spotify from "../SVG/Spotify";
+import YouTube from "../SVG/YouTube";
 import OpenSea from "../SVG/OpenSea";
-import Twitter from "../SVG/Twitter";
-import WhatIsChill from "../SVG/WhatIsChill";
-import StakeAllButton from "../SVG/StakeAllButton";
-import ClaimButton from "../SVG/ClaimButton";
-import { useSigner } from "wagmi";
+import WWOCP from "../SVG/WWOCP";
+import CloseButton from "../SVG/CloseButton";
 
-const SocialRow = ({
-  nftContract,
-  stakingContract,
-  stakedTokens,
-  setPendingTxStep,
-  unclaimedChill,
-  unstakedTokens,
-  load,
-}) => {
+const SocialRow = ({ closeDrawer }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
-  const { data: signer } = useSigner();
 
+  const ICON_WIDTH = isMobile ? "20px" : "40px";
   return (
     <Box
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        gap: isMobile ? 10 : 20,
         alignItems: "center",
-        width: "100vw",
-        flexWrap: "wrap",
+        justifyContent: "flex-end",
       }}
     >
-      <ClaimButton
-        style={{ height: isMobile ? "25px" : "50px" }}
-        stakingContract={stakingContract}
-        stakedTokenIds={stakedTokens}
-        setPendingTxStep={setPendingTxStep}
-        onSuccess={() => {
-          load(signer);
-          setPendingTxStep(0);
-        }}
-        unclaimedChill={unclaimedChill}
+      <Twitter style={{ width: ICON_WIDTH }} />
+      <Discord style={{ width: ICON_WIDTH }} />
+      <Instagram style={{ width: ICON_WIDTH }} />
+      <Spotify style={{ width: ICON_WIDTH }} />
+      <YouTube style={{ width: ICON_WIDTH }} />
+      <OpenSea style={{ width: ICON_WIDTH }} />
+      <WWOCP style={{ width: ICON_WIDTH }} />
+      <CloseButton
+        style={{ width: ICON_WIDTH, marginTop: "10px" }}
+        closeDrawer={closeDrawer}
       />
-      <StakeAllButton
-        stakingContract={stakingContract}
-        nftContract={nftContract}
-        tokensToStake={unstakedTokens}
-        onSuccess={() => {
-          load(signer);
-          setPendingTxStep(0);
-        }}
-        style={{
-          height: isMobile ? "25px" : "50px",
-          minHeight: isMobile ? "25px" : "50px",
-        }}
-        setPendingTxStep={setPendingTxStep}
-      />
-      {!isMobile && <OpenSea style={{ height: isMobile ? "35px" : "75px" }} />}
-      <Box style={{ display: "flex", gap: 30 }}>
-        <Twitter style={{ width: isMobile ? "25px" : "50px" }} />
-        <Discord style={{ width: isMobile ? "25px" : "50px" }} />
-        <WhatIsChill style={{ height: isMobile ? "25px" : "50px" }} />
-      </Box>
     </Box>
   );
 };
