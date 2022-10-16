@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import getTruncatedWallet from "../../lib/getTruncatedWallet";
@@ -8,6 +8,7 @@ import Midi from "../SVG/Midi";
 import WalletAddressBox from "../SVG/WalletAddressBox";
 
 const TopRow = ({ style }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
   const { address: account } = useAccount();
   const [open, setOpen] = useState(false);
 
@@ -23,10 +24,13 @@ const TopRow = ({ style }) => {
         {account && (
           <WalletAddressBox
             address={getTruncatedWallet(account)}
-            style={{ width: "200px" }}
+            style={{ width: isMobile ? "100px" : "200px" }}
           />
         )}
-        <Midi onClickFx={handleMidiClick} style={{ width: "100px" }} />
+        <Midi
+          onClickFx={handleMidiClick}
+          style={{ width: isMobile ? "50px" : "100px" }}
+        />
       </Box>
       <Drawer open={open} setOpen={setOpen} />
     </Box>
