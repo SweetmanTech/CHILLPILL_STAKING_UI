@@ -8,8 +8,8 @@ const SpinningPill = () => {
     <Box
       style={{
         position: "absolute",
-        top: isMobile ? "44vh" : "30vh",
-        left: isMobile ? "38vw" : "40vw",
+        top: isMobile ? "51vh" : "44vh",
+        left: isMobile ? "38vw" : "38vw",
         height: isMobile ? "100px" : "330px",
         width: isMobile ? "100px" : "330px",
       }}

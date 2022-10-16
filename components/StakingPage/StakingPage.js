@@ -1,8 +1,6 @@
 import { useState } from "react";
 import TxModal from "../TxModals";
-import ClaimTxModal from "./ClaimTxModal";
 import MainPage from "./MainPage";
-import UnstakeTxModal from "./UnstakeTxModal";
 
 const StakingPage = () => {
   const [pendingTxStep, setPendingTxStep] = useState(0);
