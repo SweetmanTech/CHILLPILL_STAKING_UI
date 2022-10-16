@@ -118,18 +118,16 @@ const MainPage = ({ setPendingTxStep }) => {
         />
       </Box>
 
-      {tokens.length > 0 &&
-        tokens.map((token) => {
-          const myTokenId = token.token.tokenId;
-          const imageUrl = getIpfsLink(token.token.image.url);
-          const isStaked = stakedTokens.includes(parseInt(myTokenId));
-          return (
-            <Box
-              key={myTokenId}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        {tokens.length > 0 &&
+          tokens.map((token) => {
+            const myTokenId = token.token.tokenId;
+            const imageUrl = getIpfsLink(token.token.image.url);
+            const isStaked = stakedTokens.includes(parseInt(myTokenId));
+            return (
               <TokenRow
                 stakingContract={stakingContract}
+                key={myTokenId}
                 nftContract={nftContract}
                 staked={isStaked}
                 tokenId={myTokenId}
@@ -139,13 +137,13 @@ const MainPage = ({ setPendingTxStep }) => {
                   setPendingTxStep(0);
                 }}
                 style={{
-                  width: isMobile ? "75vw" : "50vw",
+                  width: isMobile ? "75vw" : "30vw",
                 }}
                 setPendingTxStep={setPendingTxStep}
               />
-            </Box>
-          );
-        })}
+            );
+          })}
+      </Box>
     </Box>
   );
 };
