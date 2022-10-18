@@ -108,7 +108,7 @@ const MainPage = ({ setPendingTxStep }) => {
             width: isMobile ? "90vw" : "50vw",
             position: "relative",
             left: isMobile ? "0vw" : "8vw",
-            top: isMobile ? "-10vh" : "-10vh",
+            top: isMobile ? "0vh" : "-10vh",
           }}
           chillTokenAddres={erc20ContractAddress}
           setPendingTxStep={setPendingTxStep}
@@ -123,7 +123,14 @@ const MainPage = ({ setPendingTxStep }) => {
         />
       </Box>
 
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "center",
+        }}
+      >
         {tokens.length > 0 &&
           tokens.map((token) => {
             const myTokenId = token.token.tokenId;
