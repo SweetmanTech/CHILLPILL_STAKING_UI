@@ -36,7 +36,14 @@ const Home = ({ totalStakedPills, floorPrice }) => {
         {address ? (
           <StakingPage />
         ) : (
-          <LoginSpeechBubble style={{ width: isMobile ? "100vw" : "50vw" }} />
+          <LoginSpeechBubble
+            style={{
+              width: isMobile ? "100vw" : "50vw",
+              position: "fixed",
+              top: isMobile ? "35vh" : "26vh",
+              left: isMobile ? "0vw" : "16vw",
+            }}
+          />
         )}
       </main>
       <StakingData
