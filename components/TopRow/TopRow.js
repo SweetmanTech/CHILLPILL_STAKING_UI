@@ -29,7 +29,7 @@ const TopRow = ({ style }) => {
         )}
         <Midi
           onClickFx={handleMidiClick}
-          style={{ width: isMobile ? "50px" : "100px" }}
+          style={{ width: isMobile ? "50px" : "100px", cursor: "pointer" }}
         />
       </Box>
       <Drawer open={open} setOpen={setOpen} />
