@@ -86,10 +86,10 @@ const TokenRow = ({
       <Box
         style={{
           position: "relative",
-          top: isMobile ? 62 : 175,
+          top: isMobile ? "15vh" : "20vh",
           left: isMobile ? 20 : 40,
-          height: isMobile ? "50px" : "130px",
-          width: isMobile ? "50px" : "130px",
+          height: isMobile ? "100px" : "130px",
+          width: isMobile ? "100px" : "130px",
         }}
       >
         <Image src={image} layout="fill" objectFit="cover" alt="chillrx" />
