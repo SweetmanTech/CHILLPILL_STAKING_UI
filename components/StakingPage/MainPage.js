@@ -104,7 +104,12 @@ const MainPage = ({ setPendingTxStep }) => {
       <Box style={{ display: "flex", justifyContent: "center" }}>
         <SteakChatSvg
           amountOfChill={unclaimedChill}
-          style={{ width: isMobile ? "90vw" : "50vw", position: "relative" }}
+          style={{
+            width: isMobile ? "90vw" : "50vw",
+            position: "relative",
+            left: isMobile ? "0vw" : "8vw",
+            top: isMobile ? "-10vh" : "-10vh",
+          }}
           chillTokenAddres={erc20ContractAddress}
           setPendingTxStep={setPendingTxStep}
           tokensToStake={unstakedTokens}
