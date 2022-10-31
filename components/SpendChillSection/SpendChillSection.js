@@ -4,14 +4,14 @@ const EarnChillSection = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Typography variant="h4">Spend $CHILL</Typography>
-      <Box>
-        <Typography variant="h6" color="#b8b8b8">
-          Enter the Pharmacy
-        </Typography>
-        <Typography variant="p" color="#b8b8b8">
-          Spend $CHILL in our marketplace
-        </Typography>
-      </Box>
+      <a href="https://pharmacy.chillrx.io/" target="__blank">
+        <Box>
+          <Typography variant="h6" color="red">
+            Enter the Pharmacy
+          </Typography>
+          <Typography variant="p">Spend $CHILL in our marketplace</Typography>
+        </Box>
+      </a>
       <Box>
         <Typography variant="h6" color="#b8b8b8">
           Bid on Bluechips
